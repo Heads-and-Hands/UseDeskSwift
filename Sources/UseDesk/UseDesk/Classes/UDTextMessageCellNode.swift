@@ -79,7 +79,7 @@ class UDTextMessageCellNode: UDMessageCellNode {
         vMessageStack.style.maxWidth = sizeMessagesManager.maxWidthBubbleMessageDimension
         vMessageStack.spacing = 0
         vMessageStack.alignItems = .start
-        vMessageStack.children?[0] = textMessageInsets
+        vMessageStack.children?.append(textMessageInsets)
         DispatchQueue.main.async(execute: { [weak self] in
             guard let wSelf = self else {return}
             wSelf.tableButtonsNode.reloadData()
@@ -101,14 +101,14 @@ class UDTextMessageCellNode: UDMessageCellNode {
             }
             height += messageButtonStyle.margin.top + messageButtonStyle.margin.bottom
             tableButtonsNode.style.minHeight = ASDimensionMakeWithPoints(height)
-            vMessageStack.children?[1] = insetSpec
+            vMessageStack.children?.append(insetSpec)
         }
         
         let timeInsetSpec = ASInsetLayoutSpec(insets: UIEdgeInsets(top: 0, left: 0, bottom: messageStyle.timeMargin.bottom, right: message.outgoing ? 0 : messageStyle.timeMargin.right), child: timeNode)
         let messageAndTimeAndSendedStack = ASStackLayoutSpec(direction: .horizontal, spacing: 0, justifyContent: .end, alignItems: .end, children: [vMessageStack , timeInsetSpec])
         if message.outgoing {
             let sendedImageInsetSpec = ASInsetLayoutSpec(insets: UIEdgeInsets(top: 0, left: messageStyle.sendedStatusMargin.left, bottom: messageStyle.sendedStatusMargin.bottom, right: messageStyle.sendedStatusMargin.right), child: sendedImageNode)
-            messageAndTimeAndSendedStack.children?[2] = sendedImageInsetSpec
+            messageAndTimeAndSendedStack.children?.append(sendedImageInsetSpec)
         }
         messageAndTimeAndSendedStack.style.flexShrink = 1
         messageAndTimeAndSendedStack.style.flexGrow = 0

@@ -41,7 +41,7 @@ class UDMessageButtonCellNode: ASCellNode {
                     justifyContent: .start,
                     alignItems: .center,
                     children: [titleNodeInsetSpec])
-        verticalSpec.children?[0] = vMessageStack
+        verticalSpec.children?.append(vMessageStack)
         verticalSpec.style.alignSelf = .center
         let verticalSpecInsetSpec = ASInsetLayoutSpec(insets: UIEdgeInsets(top: spacing, left: 0, bottom: 0, right: 0), child: verticalSpec)
         return verticalSpecInsetSpec

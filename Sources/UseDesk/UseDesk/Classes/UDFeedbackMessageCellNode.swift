@@ -92,13 +92,13 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
         hButtonsStack.alignItems = .center
         if feedbackAction != nil {
             if feedbackAction! {
-                hButtonsStack.children?[0] = likeButtonNode
+                hButtonsStack.children?.append(likeButtonNode)
             } else {
-                hButtonsStack.children?[0] = dislikeButtonNode
+                hButtonsStack.children?.append(dislikeButtonNode)
             }
         } else {
-            hButtonsStack.children?[0] = dislikeButtonNode
-            hButtonsStack.children?[1] = likeButtonNode
+            hButtonsStack.children?.append(dislikeButtonNode)
+            hButtonsStack.children?.append(likeButtonNode)
         }
         let hButtonsInsetStack = ASInsetLayoutSpec(insets: UIEdgeInsets(top: feedbackMessageStyle.buttonsMarginTop, left: 0, bottom: 0, right: 0), child: hButtonsStack)
         
@@ -113,7 +113,7 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
         vMessageStack.style.maxWidth = ASDimensionMakeWithPoints(sizeMessagesManager.maxWidthBubbleMessage)
         vMessageStack.spacing = 0
         vMessageStack.alignItems = .end
-        vMessageStack.children?[0] = vButtonsAndTextStack
+        vMessageStack.children?.append(vButtonsAndTextStack)
         vMessageStack.style.maxWidth = sizeMessagesManager.maxWidthBubbleMessageDimension
         
         timeNode.style.alignSelf = .end
@@ -127,7 +127,7 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
             timeEndSendedLayoutElements.append(sendedImageNode)
         }
         let horizon = ASStackLayoutSpec(direction: .horizontal, spacing: 0, justifyContent: .end, alignItems: .end, children: timeEndSendedLayoutElements)
-        vMessageStack.children?[1] = horizon
+        vMessageStack.children?.append(horizon)
         
         contentMessageInsetSpec = ASInsetLayoutSpec(insets: UIEdgeInsets.zero, child: vMessageStack)
         let messageLayoutSpec = super.layoutSpecThatFits(constrainedSize)

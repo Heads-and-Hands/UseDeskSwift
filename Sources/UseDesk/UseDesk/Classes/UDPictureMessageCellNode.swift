@@ -116,7 +116,7 @@ class UDPictureMessageCellNode: UDMessageCellNode {
         vMessageStack.direction = .vertical
         vMessageStack.spacing = 0
         vMessageStack.alignItems = .end
-        vMessageStack.children?[0] = timeFromImageOverlaySpec
+        vMessageStack.children?.append(timeFromImageOverlaySpec)
         
         contentMessageInsetSpec = ASInsetLayoutSpec(insets: pictureStyle.margin, child: timeFromImageOverlaySpec)
         let messageLayoutSpec = super.layoutSpecThatFits(constrainedSize)

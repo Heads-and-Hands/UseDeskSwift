@@ -103,8 +103,8 @@ class UDFileMessageCellNode: UDMessageCellNode {
         vTextsStack.alignItems = .start
         vTextsStack.style.flexShrink = 1
         vTextsStack.style.flexGrow = 0
-        vTextsStack.children?[0] = nameFileTextInsetSpec
-        vTextsStack.children?[1] = sizeTextNode
+        vTextsStack.children?.append(nameFileTextInsetSpec)
+        vTextsStack.children?.append(sizeTextNode)
         
         let vTextsStackCenterSpec = ASCenterLayoutSpec(centeringOptions: .Y, sizingOptions: [], child: vTextsStack)
         vTextsStackCenterSpec.style.flexShrink = 1
@@ -118,14 +118,14 @@ class UDFileMessageCellNode: UDMessageCellNode {
         hIconAndTextsStack.style.alignSelf = .auto
         hIconAndTextsStack.style.maxWidth = sizeMessagesManager.maxWidthBubbleMessageDimension
         hIconAndTextsStack.alignItems = .start
-        hIconAndTextsStack.children?[0] = loaderAndIconInsetSpec
-        hIconAndTextsStack.children?[1] = vTextsStackCenterSpec
+        hIconAndTextsStack.children?.append(loaderAndIconInsetSpec)
+        hIconAndTextsStack.children?.append(vTextsStackCenterSpec)
         
         let timeInsetSpec = ASInsetLayoutSpec(insets: UIEdgeInsets(top: 0, left: 0, bottom: messageStyle.timeMargin.bottom, right: message.outgoing ? 0 : messageStyle.timeMargin.right), child: timeNode)
         let timeAndSendedStack = ASStackLayoutSpec(direction: .horizontal, spacing: 0, justifyContent: .end, alignItems: .end, children: [timeInsetSpec])
         if message.outgoing {
             let sendedImageInsetSpec = ASInsetLayoutSpec(insets: UIEdgeInsets(top: 0, left: messageStyle.sendedStatusMargin.left, bottom: messageStyle.sendedStatusMargin.bottom, right: messageStyle.sendedStatusMargin.right), child: sendedImageNode)
-            timeAndSendedStack.children?[1] = sendedImageInsetSpec
+            timeAndSendedStack.children?.append(sendedImageInsetSpec)
         }
         
         let timeAndSendedCenterSpec = ASCenterLayoutSpec(horizontalPosition: .end, verticalPosition: .end, sizingOption: .minimumWidth, child: timeAndSendedStack)

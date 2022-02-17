@@ -126,17 +126,17 @@ class UDMessageCellNode: ASCellNode {
             let notSentImageInsetSpec = ASInsetLayoutSpec(insets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: messageStyle.notSentImageMarginToBubble), child: notSentImageNode)
             let notSentImageCenterSpec = ASCenterLayoutSpec(horizontalPosition: .end, verticalPosition: .center, sizingOption: [], child: notSentImageInsetSpec)
             if message.statusSend == UD_STATUS_SEND_FAIL {
-                hMessageStack.children?[0] = notSentImageCenterSpec
+                hMessageStack.children?.append(notSentImageCenterSpec)
             }
-            hMessageStack.children?[1] = contentMessageBackgroundAndNameStack
+            hMessageStack.children?.append(contentMessageBackgroundAndNameStack)
             hMessageStack.horizontalAlignment = .right
         } else {
             avatarImageNode.style.width = ASDimensionMake(avatarStyle.avatarDiameter)
             avatarImageNode.style.height = ASDimensionMake(avatarStyle.avatarDiameter)
             let avatarImageInsetSpec = ASInsetLayoutSpec(insets: avatarStyle.margin, child: avatarImageNode)
             let avatarImageCenterSpec = ASCenterLayoutSpec(horizontalPosition: .start, verticalPosition: .end, sizingOption: [], child: avatarImageInsetSpec)
-            hMessageStack.children?[0] = avatarImageCenterSpec
-            hMessageStack.children?[1] = contentMessageBackgroundAndNameStack
+            hMessageStack.children?.append(avatarImageCenterSpec)
+            hMessageStack.children?.append(contentMessageBackgroundAndNameStack)
             hMessageStack.horizontalAlignment = .left
         }
         
