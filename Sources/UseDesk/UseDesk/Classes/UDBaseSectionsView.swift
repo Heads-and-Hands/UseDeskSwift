@@ -145,8 +145,8 @@ class UDBaseSectionsView: UIViewController, UITableViewDelegate, UITableViewData
         }
         navigationItem.title = usedesk!.stringFor("KnowlengeBase")
       
-        tableView.register(UINib(nibName: "UDBaseSearchCell", bundle: BundleId.thisBundle), forCellReuseIdentifier: "UDBaseSearchCell")
-        tableView.register(UINib(nibName: "UDBaseSectionViewCell", bundle: BundleId.thisBundle), forCellReuseIdentifier: "UDBaseSectionViewCell")
+        tableView.register(UINib(nibName: "UDBaseSearchCell", bundle: .module), forCellReuseIdentifier: "UDBaseSearchCell")
+        tableView.register(UINib(nibName: "UDBaseSectionViewCell", bundle: .module), forCellReuseIdentifier: "UDBaseSectionViewCell")
         
     }
     

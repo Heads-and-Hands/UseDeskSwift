@@ -129,8 +129,8 @@ class UDBaseArticlesView: UIViewController, UITableViewDelegate, UITableViewData
         }
         navigationItem.title = сategory?.title ?? usedesk!.stringFor("Article")
         
-        tableView.register(UINib(nibName: "UDBaseArticleViewCell", bundle: BundleId.thisBundle), forCellReuseIdentifier: "UDBaseArticleViewCell")
-        tableView.register(UINib(nibName: "UDBaseSearchCell", bundle: BundleId.thisBundle), forCellReuseIdentifier: "UDBaseSearchCell")
+        tableView.register(UINib(nibName: "UDBaseArticleViewCell", bundle: .module), forCellReuseIdentifier: "UDBaseArticleViewCell")
+        tableView.register(UINib(nibName: "UDBaseSearchCell", bundle: .module), forCellReuseIdentifier: "UDBaseSearchCell")
         tableView.reloadData()
     }
     

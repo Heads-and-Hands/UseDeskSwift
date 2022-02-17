@@ -140,8 +140,8 @@ class UDMessagesView: UIViewController, UITextViewDelegate, UIImagePickerControl
         
         attachCollectionView.delegate = self
         attachCollectionView.dataSource = self
-        attachCollectionView.register(UINib(nibName: "UDAttachSmallCollectionViewCell", bundle: BundleId.thisBundle), forCellWithReuseIdentifier: "UDAttachSmallCollectionViewCell")
-        attachCollectionView.register(UINib(nibName: "UDAttachSmallCameraCollectionViewCell", bundle: BundleId.thisBundle), forCellWithReuseIdentifier: "UDAttachSmallCameraCollectionViewCell")
+        attachCollectionView.register(UINib(nibName: "UDAttachSmallCollectionViewCell", bundle: .module), forCellWithReuseIdentifier: "UDAttachSmallCollectionViewCell")
+        attachCollectionView.register(UINib(nibName: "UDAttachSmallCameraCollectionViewCell", bundle: .module), forCellWithReuseIdentifier: "UDAttachSmallCameraCollectionViewCell")
         
         attachBlackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.closeAttachView)))
         

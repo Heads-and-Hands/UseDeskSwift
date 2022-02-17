@@ -127,8 +127,8 @@ class UDBaseCategoriesView: UIViewController, UITableViewDelegate, UITableViewDa
         }
         navigationItem.title = baseCollection?.title ?? usedesk!.stringFor("Category")
       
-        tableView.register(UINib(nibName: "UDBaseSearchCell", bundle: BundleId.thisBundle), forCellReuseIdentifier: "UDBaseSearchCell")
-        tableView.register(UINib(nibName: "UDBaseCategoriesCell", bundle: BundleId.thisBundle), forCellReuseIdentifier: "UDBaseCategoriesCell")
+        tableView.register(UINib(nibName: "UDBaseSearchCell", bundle: .module), forCellReuseIdentifier: "UDBaseSearchCell")
+        tableView.register(UINib(nibName: "UDBaseCategoriesCell", bundle: .module), forCellReuseIdentifier: "UDBaseCategoriesCell")
         tableView.reloadData()
     }
     

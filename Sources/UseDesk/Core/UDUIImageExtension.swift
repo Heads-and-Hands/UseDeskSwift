@@ -11,7 +11,7 @@ extension UIImage {
         if let image = UIImage(named: imageNamed) {
             return image
         } else {
-            let bundle: Bundle = BundleId.thisBundle
+            let bundle: Bundle = .module
             
             if let image = UIImage(named: imageNamed, in: bundle, compatibleWith: nil) {
                 return image

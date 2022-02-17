@@ -82,7 +82,7 @@ class UDOfflineForm: UIViewController, UITextFieldDelegate {
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: configurationStyle.navigationBarStyle.backButtonImage, style: .plain, target: self, action: #selector(self.backAction))
         let feedbackFormStyle = configurationStyle.feedbackFormStyle
-        tableView.register(UINib(nibName: "UDTextAnimateTableViewCell", bundle: BundleId.thisBundle), forCellReuseIdentifier: "UDTextAnimateTableViewCell")
+        tableView.register(UINib(nibName: "UDTextAnimateTableViewCell", bundle: .module), forCellReuseIdentifier: "UDTextAnimateTableViewCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 64
         tableView.delegate = self

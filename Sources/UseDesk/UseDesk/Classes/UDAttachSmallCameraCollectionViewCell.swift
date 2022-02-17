@@ -15,10 +15,6 @@ class UDAttachSmallCameraCollectionViewCell: UICollectionViewCell {
     var input: AVCaptureDeviceInput?
     var output: AVCaptureMetadataOutput?
     var prevLayer: AVCaptureVideoPreviewLayer?
-
-    convenience init() {
-        self.init(nibName: "UDAttachSmallCameraCollectionViewCell", bundle: .module)
-    }
     
     func createSession() {
         if !(session?.isRunning ?? false) {
