@@ -9,9 +9,3 @@ import Foundation
 protocol UDUISetupable {
     func setupUI()
 }
-
-extension UDUISetupable {
-    func setupUI() {
-        
-    }
-}
