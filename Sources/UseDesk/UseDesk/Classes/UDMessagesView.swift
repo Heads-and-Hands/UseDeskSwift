@@ -106,7 +106,7 @@ class UDMessagesView: UIViewController, UITextViewDelegate, UIImagePickerControl
     }
     
     convenience init() {
-        self.init(nibName: nil, bundle: .module)
+        self.init(nibName: "UDMessagesView", bundle: .module)
     }
     
     override var shouldAutorotate: Bool {
