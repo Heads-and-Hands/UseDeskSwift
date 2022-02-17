@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UDBaseCategoriesView" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UDBaseCategoriesView" customModule="UseDesk">
             <connections>
                 <outlet property="loadingView" destination="iqu-Zf-Fjw" id="hZl-lo-NPW"/>
                 <outlet property="tableView" destination="Ri6-kp-78w" id="mVW-kg-a4c"/>
