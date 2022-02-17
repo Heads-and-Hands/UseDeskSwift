@@ -24,8 +24,7 @@ class UDOfflineFormTopicsSelect: UIViewController {
     private var previousOrientation: Orientation = .portrait
     
     convenience init() {
-        let nibName: String = "UDOfflineFormTopicsSelect"
-        self.init(nibName: nibName, bundle: BundleId.bundle(for: nibName))
+        self.init(nibName: nil, bundle: .module)
     }
     
     override func viewDidLoad() {

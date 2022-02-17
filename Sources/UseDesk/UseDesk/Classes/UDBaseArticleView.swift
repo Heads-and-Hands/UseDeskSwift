@@ -77,8 +77,7 @@ class UDBaseArticleView: UIViewController, WKUIDelegate, UISearchBarDelegate, UI
     private var configurationStyle: ConfigurationStyle = ConfigurationStyle()
     
     convenience init() {
-        let nibName: String = "UDBaseArticle"
-        self.init(nibName: nibName, bundle: BundleId.bundle(for: nibName))
+        self.init(nibName: nil, bundle: .module)
     }
     
     override func viewDidLoad() {
