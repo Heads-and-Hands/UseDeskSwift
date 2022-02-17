@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UDOfflineForm" customModule="UseDesk">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UDOfflineForm" customModuleProvider="target">
             <connections>
                 <outlet property="closeButton" destination="ett-Pt-eay" id="amU-yF-KTc"/>
                 <outlet property="contentView" destination="JRI-Mh-w4Z" id="q2Q-1t-heV"/>
