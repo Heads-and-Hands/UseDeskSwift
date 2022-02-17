@@ -37,7 +37,7 @@ class UDBaseSectionsView: UIViewController, UITableViewDelegate, UITableViewData
     private var offlineVC = UDOfflineForm(nibName: "UDOfflineForm", bundle: nil)
     
     convenience init() {
-        self.init(nibName: nil, bundle: .module)
+        self.init(nibName: "UDBaseSectionsView", bundle: .module)
     }
     
     override func viewDidLoad() {

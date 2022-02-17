@@ -39,7 +39,7 @@ class UDOfflineForm: UIViewController, UITextFieldDelegate {
     private var dialogflowVC : DialogflowView = DialogflowView()
     
     convenience init() {
-        self.init(nibName: nil, bundle: .module)
+        self.init(nibName: "UDOfflineForm", bundle: .module)
     }
     
     override func viewDidLoad() {

@@ -32,7 +32,7 @@ class UDFileViewingVC: UIViewController, UIScrollViewDelegate {
     private let playerVC = AVPlayerViewController()
     
     convenience init() {
-        self.init(nibName: nil, bundle: .module)
+        self.init(nibName: "UDFileViewingVC", bundle: .module)
     }
     
     override func viewDidLoad() {
