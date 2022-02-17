@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UDMessagesView" customModule="UseDesk">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UDMessagesView" customModuleProvider="target">
             <connections>
                 <outlet property="attachBackView" destination="vWE-cl-xhX" id="IHE-lK-ewg"/>
                 <outlet property="attachBlackView" destination="lp3-5N-8Aq" id="aG3-Xn-aIf"/>
@@ -33,7 +33,7 @@
                 <outlet property="buttonSendLoader" destination="4CI-2b-YLv" id="jUd-S4-cm0"/>
                 <outlet property="buttonSendTC" destination="Wny-R1-Wnx" id="G4k-MO-knW"/>
                 <outlet property="buttonSendWC" destination="mFz-Hz-yj8" id="lhe-gX-5Sh"/>
-                <outlet property="loader" destination="Gaj-ut-CEu" id="qjz-w9-j0M"/>
+                <outlet property="loader" destination="Gaj-ut-CEu" id="PsZ-X4-O21"/>
                 <outlet property="scrollButton" destination="v4h-AJ-Jn3" id="Lll-4b-bYh"/>
                 <outlet property="scrollButtonBC" destination="0dg-fw-lbq" id="HQu-op-hq0"/>
                 <outlet property="scrollButtonHC" destination="Pjx-Hh-sHI" id="M2A-ee-dER"/>
