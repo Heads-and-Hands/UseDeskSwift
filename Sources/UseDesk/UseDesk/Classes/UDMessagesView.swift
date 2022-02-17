@@ -8,6 +8,7 @@ import Alamofire
 import Swime
 import MobileCoreServices
 import AsyncDisplayKit
+import UIKit
 
 enum Orientation {
     case portrait

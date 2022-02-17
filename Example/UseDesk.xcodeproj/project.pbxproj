@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		500D7FD720DA439B000F5100 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 500D7FD620DA439B000F5100 /* README.md */; };
 		500D7FDC20DA4491000F5100 /* UDStartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 500D7FDA20DA4491000F5100 /* UDStartViewController.xib */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -20,7 +19,6 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
-		92675A0ADB429FC5F094F48F /* Pods_UseDesk_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2023EDE6BA4F6C85E59BE07C /* Pods_UseDesk_Example.framework */; };
 		A5238CF02208D9F100C2D6EC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5238CEF2208D9F100C2D6EC /* AppDelegate.swift */; };
 		A5238CF22208DAFA00C2D6EC /* UDStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5238CF12208DAFA00C2D6EC /* UDStartViewController.swift */; };
 		AA4D3682F725E2864DB3AD11 /* Pods_UseDesk_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 705B37F4FF28F7A63F231904 /* Pods_UseDesk_Tests.framework */; };
@@ -37,11 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0B10A8E7AF3E75F60A94A1D6 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		2023EDE6BA4F6C85E59BE07C /* Pods_UseDesk_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UseDesk_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		28B55BA18FE7DB8FDDFCE03A /* Pods-UseDesk_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UseDesk_Example.release.xcconfig"; path = "Target Support Files/Pods-UseDesk_Example/Pods-UseDesk_Example.release.xcconfig"; sourceTree = "<group>"; };
-		40E1D6D13F7BFCE83ED481B5 /* Pods-UseDesk_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UseDesk_Example.debug.xcconfig"; path = "Target Support Files/Pods-UseDesk_Example/Pods-UseDesk_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		500D7FD620DA439B000F5100 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		2F3D90A527BED5D8000FAB94 /* UseDeskSwift */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UseDeskSwift; path = ..; sourceTree = "<group>"; };
 		500D7FDA20DA4491000F5100 /* UDStartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UDStartViewController.xib; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* UseDesk_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UseDesk_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -56,13 +51,11 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		696B2B5CB21BFA2DD1F264EA /* Pods-UseDesk_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UseDesk_Tests.release.xcconfig"; path = "Target Support Files/Pods-UseDesk_Tests/Pods-UseDesk_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		705B37F4FF28F7A63F231904 /* Pods_UseDesk_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UseDesk_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A5238CEF2208D9F100C2D6EC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A5238CF12208DAFA00C2D6EC /* UDStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDStartViewController.swift; sourceTree = "<group>"; };
 		A5E0A5D623B4DA0800A73A89 /* UseDesk_Example-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UseDesk_Example-Bridging-Header.h"; sourceTree = "<group>"; };
-		BA5789BF650489B7A24A2E25 /* Pods-UseDesk_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UseDesk_Tests.debug.xcconfig"; path = "Target Support Files/Pods-UseDesk_Tests/Pods-UseDesk_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +66,6 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				92675A0ADB429FC5F094F48F /* Pods_UseDesk_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +83,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F3D90A427BED5D8000FAB94 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				2F3D90A527BED5D8000FAB94 /* UseDeskSwift */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		500D7FD820DA4491000F5100 /* UDStartViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -103,12 +103,11 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
-				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
+				2F3D90A427BED5D8000FAB94 /* Packages */,
 				6003F593195388D20070C39A /* Example for UseDesk */,
 				6003F5B5195388D20070C39A /* Tests */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
-				ECB24B11A3BE50520A250C25 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -176,26 +175,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
-			isa = PBXGroup;
-			children = (
-				500D7FD620DA439B000F5100 /* README.md */,
-				0B10A8E7AF3E75F60A94A1D6 /* LICENSE */,
-			);
-			name = "Podspec Metadata";
-			sourceTree = "<group>";
-		};
-		ECB24B11A3BE50520A250C25 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				40E1D6D13F7BFCE83ED481B5 /* Pods-UseDesk_Example.debug.xcconfig */,
-				28B55BA18FE7DB8FDDFCE03A /* Pods-UseDesk_Example.release.xcconfig */,
-				BA5789BF650489B7A24A2E25 /* Pods-UseDesk_Tests.debug.xcconfig */,
-				696B2B5CB21BFA2DD1F264EA /* Pods-UseDesk_Tests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -203,18 +182,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "UseDesk_Example" */;
 			buildPhases = (
-				8307CAC583537C18FC5C7297 /* [CP] Check Pods Manifest.lock */,
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				369CB9D3511D16A4B22EF133 /* [CP] Embed Pods Frameworks */,
-				4AD0D91D98463B258C5C9302 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = UseDesk_Example;
+			packageProductDependencies = (
+			);
 			productName = UseDesk;
 			productReference = 6003F58A195388D20070C39A /* UseDesk_Example.app */;
 			productType = "com.apple.product-type.application";
@@ -249,7 +227,7 @@
 				ORGANIZATIONNAME = "serega@budyakov.com";
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
-						DevelopmentTeam = HTC25B4YP8;
+						DevelopmentTeam = A4E698G9G7;
 						LastSwiftMigration = 1240;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -273,6 +251,8 @@
 				Base,
 			);
 			mainGroup = 6003F581195388D10070C39A;
+			packageReferences = (
+			);
 			productRefGroup = 6003F58B195388D20070C39A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -289,7 +269,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
-				500D7FD720DA439B000F5100 /* README.md in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				500D7FDC20DA4491000F5100 /* UDStartViewController.xib in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
@@ -323,80 +302,6 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-UseDesk_Tests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		369CB9D3511D16A4B22EF133 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UseDesk_Example/Pods-UseDesk_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/Down/Down.framework",
-				"${BUILT_PRODUCTS_DIR}/PINCache/PINCache.framework",
-				"${BUILT_PRODUCTS_DIR}/PINOperation/PINOperation.framework",
-				"${BUILT_PRODUCTS_DIR}/PINRemoteImage/PINRemoteImage.framework",
-				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
-				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
-				"${BUILT_PRODUCTS_DIR}/Swime/Swime.framework",
-				"${BUILT_PRODUCTS_DIR}/Texture/AsyncDisplayKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Down.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINCache.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINOperation.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PINRemoteImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Swime.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AsyncDisplayKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UseDesk_Example/Pods-UseDesk_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4AD0D91D98463B258C5C9302 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UseDesk_Example/Pods-UseDesk_Example-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/UseDesk_SDK_Swift/UseDesk.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UseDesk.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UseDesk_Example/Pods-UseDesk_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8307CAC583537C18FC5C7297 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-UseDesk_Example-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -569,7 +474,6 @@
 		};
 		6003F5C0195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 40E1D6D13F7BFCE83ED481B5 /* Pods-UseDesk_Example.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -577,7 +481,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3.0;
-				DEVELOPMENT_TEAM = HTC25B4YP8;
+				DEVELOPMENT_TEAM = A4E698G9G7;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UseDesk/UseDesk-Prefix.pch";
 				INFOPLIST_FILE = "UseDesk/UseDesk-Info.plist";
@@ -585,7 +489,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.2.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = UseDeskExampleSDK.ru;
+				PRODUCT_BUNDLE_IDENTIFIER = UseDeskExampleSDK.com.ru;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "UseDesk/UseDesk_Example-Bridging-Header.h";
@@ -598,7 +502,6 @@
 		};
 		6003F5C1195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 28B55BA18FE7DB8FDDFCE03A /* Pods-UseDesk_Example.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -606,7 +509,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3.0;
-				DEVELOPMENT_TEAM = HTC25B4YP8;
+				DEVELOPMENT_TEAM = A4E698G9G7;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UseDesk/UseDesk-Prefix.pch";
 				INFOPLIST_FILE = "UseDesk/UseDesk-Info.plist";
@@ -614,7 +517,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.2.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = UseDeskExampleSDK.ru;
+				PRODUCT_BUNDLE_IDENTIFIER = UseDeskExampleSDK.com.ru;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "UseDesk/UseDesk_Example-Bridging-Header.h";
@@ -626,7 +529,6 @@
 		};
 		6003F5C3195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BA5789BF650489B7A24A2E25 /* Pods-UseDesk_Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -651,7 +553,6 @@
 		};
 		6003F5C4195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 696B2B5CB21BFA2DD1F264EA /* Pods-UseDesk_Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
