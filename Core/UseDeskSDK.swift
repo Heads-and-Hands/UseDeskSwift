@@ -24,7 +24,7 @@ public typealias UDSFeedbackAnswerMessageBlock = (Bool) -> Void
     func saveMessages(_ messages: [UDMessage])
 }
 
-public class UseDeskSDK: NSObject {
+public class UseDeskSDK: NSObject, UDUISetupable {
     @objc public var newMessageBlock: UDSNewMessageBlock?
     @objc public var connectBlock: UDSConnectBlock?
     @objc public var errorBlock: UDSErrorSocketBlock?
