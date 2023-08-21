@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/socketio/socket.io-client-swift",
         "state": {
           "branch": null,
-          "revision": "6b80f75ec83d5711f7f7c37e19c935c7af39e724",
-          "version": "16.0.0"
+          "revision": "d7846b31a215211e595292425a2fdd6d16177faf",
+          "version": null
         }
       },
       {

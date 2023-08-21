@@ -12,7 +12,7 @@ let package = Package (
         .library(name: "UseDesk", targets: ["UseDesk"])
     ],
     dependencies: [
-        .package(name: "SocketIO", url: "https://github.com/socketio/socket.io-client-swift", "16.0.0"..<"16.0.0"),
+        .package(name: "SocketIO", url: "https://github.com/socketio/socket.io-client-swift", revision: "d7846b31a215211e595292425a2fdd6d16177faf"),
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.0.0"),
         .package(url: "https://github.com/sendyhalim/Swime", from: "3.0.0"),
         .package(url: "https://github.com/johnxnguyen/Down", from: "0.11.0")
