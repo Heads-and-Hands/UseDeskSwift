@@ -22,7 +22,7 @@ let package = Package (
             name: "UseDesk",
             dependencies: [
                 "Alamofire",
-                "SocketIO",
+                "socket.io-client-swift",
                 "Swime",
                 "Down",
                 "AsyncDisplayKit"
