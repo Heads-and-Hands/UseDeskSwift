@@ -17,11 +17,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-ASDK_EXTERN void ASInitializeFrameworkMainThreadOnConstructor(void);
-ASDK_EXTERN void ASInitializeFrameworkMainThreadOnDestructor(void);
-
-// Calls both ASInitializeFrameworkMainThreadOnConstructor and ASInitializeFrameworkMainThreadOnDestructor
-// Used when manually initializing texture
 ASDK_EXTERN void ASInitializeFrameworkMainThread(void);
 
 ASDK_EXTERN BOOL ASDefaultAllowsGroupOpacity(void);

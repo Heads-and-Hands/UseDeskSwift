@@ -6,12 +6,6 @@
 import UIKit
 import Photos
 
-enum UDFileType {
-    case image
-    case video
-    case file
-}
-
 protocol UDAttachCVCellDelegate: AnyObject {
     func deleteFile(index: Int)
 }
@@ -35,7 +29,7 @@ class UDAttachCollectionViewCell: UICollectionViewCell {
     private let kIndentImage: CGFloat = 4
     private let kVideoViewHeight: CGFloat = 16
     
-    func setingCell(image: UIImage? = nil, type: UDFileType?, videoDuration: Double? = nil, urlFile: URL? = nil, index: Int) {
+    func setingCell(image: UIImage? = nil, type: UDFileType?, videoDuration: Double? = nil, urlFile: URL? = nil, nameFile: String? = nil, index: Int) {
         loader?.removeFromSuperview()
         loader = nil
         imageAttachView.image = image
@@ -102,8 +96,8 @@ class UDAttachCollectionViewCell: UICollectionViewCell {
             if imageIconFileView.superview == nil {
                 self.addSubview(imageIconFileView)
             }
-            if urlFile != nil {
-                fileTitleLabel.text = urlFile!.lastPathComponent
+            if urlFile != nil || nameFile != nil {
+                fileTitleLabel.text = urlFile != nil ? urlFile!.lastPathComponent : nameFile ?? ""
                 fileTitleLabel.frame = CGRect(x: imageAttachView.frame.origin.x + 4, y: imageAttachView.frame.origin.y + imageAttachView.frame.height - 4 - 16, width: imageAttachView.frame.width - (4 * 2), height: 16)
                 fileTitleLabel.font = UIFont.systemFont(ofSize: 12)
                 fileTitleLabel.textColor = UIColor(hexString: "454D63")
@@ -121,19 +115,8 @@ class UDAttachCollectionViewCell: UICollectionViewCell {
     }
     
     func showLoader() {
-//        videoView.removeFromSuperview()
-//        imageIconFileView.removeFromSuperview()
-//        fileTitleLabel.removeFromSuperview()
-//        imageAttachView.removeFromSuperview()
-//        imageAttachView.backgroundColor = UIColor(hexString: "F0F0F0")
-//        imageAttachView.frame = CGRect(x: kIndentImage, y: kIndentImage, width: configurationStyle.inputViewStyle.heightAssetsCollection - kIndentImage * 2, height: configurationStyle.inputViewStyle.heightAssetsCollection - kIndentImage * 2)
-//        imageAttachView.layer.masksToBounds = true
-//        imageAttachView.layer.cornerRadius = 4
-//        if imageAttachView.superview == nil {
-//            self.addSubview(imageAttachView)
-//        }
         if loader == nil {
-            loader = UIActivityIndicatorView(style: .white)
+            loader = UIActivityIndicatorView(style: .gray)
             loader!.translatesAutoresizingMaskIntoConstraints = false
             self.addSubview(loader!)
             let horizontalConstraint = NSLayoutConstraint(item: loader!, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)

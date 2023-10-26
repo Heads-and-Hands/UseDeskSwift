@@ -35,7 +35,6 @@ import Foundation
     public var created_at: String = ""
     
     init?(json: [String: Any]) {
-        
         guard
             let id = json["id"] as? Int,
             let title = json["title"] as? String,
@@ -50,8 +49,8 @@ import Foundation
             else { return nil }
         
         self.id = id
-        self.title = title
-        self.text = text
+        self.title = title.udRemoveSubstrings(with: ["<b>", "</b>"])
+        self.text = text.udRemoveSubstrings(with: ["<b>", "</b>"])
         self.category_id = category_id
         self.collection_id = collection_id
         self.category_title = category_title
@@ -63,6 +62,11 @@ import Foundation
         } else {
             self.open = false
         }
+    }
+    
+    init(id: Int, title: String) {
+        self.id = id
+        self.title = title
     }
     
     static func get(from jsonObject: Any) -> UDArticle? {

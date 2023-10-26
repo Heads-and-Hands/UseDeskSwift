@@ -9,7 +9,7 @@ import UIKit
 protocol ChangeabelTextCellDelegate: AnyObject {
     func newValue(indexPath: IndexPath, value: String, isValid: Bool, positionCursorY: CGFloat)
     func tapingTextView(indexPath: IndexPath, position: CGFloat)
-    func endWrite()
+    func endWrite(indexPath: IndexPath)
 }
 
 class UDTextAnimateTableViewCell: UITableViewCell, UITextViewDelegate, UITextFieldDelegate {
@@ -41,9 +41,9 @@ class UDTextAnimateTableViewCell: UITableViewCell, UITextViewDelegate, UITextFie
     var isLimitLengthText = true
     var title = ""
     var titleAttributed: NSAttributedString? = nil
-    var teextAttributed: NSAttributedString? = nil
+    var textAttributed: NSAttributedString? = nil
     
-    func setCell(title _title: String, titleAttributed _titleAttributed: NSAttributedString? = nil, text: String, textAttributed: NSAttributedString? = nil, indexPath indexPathCell: IndexPath, isValid isValidText: Bool = true, isTitleErrorState isTitleError: Bool = false, isLast isLastText: Bool = false, isNeedLastLine: Bool = false, isNeedSelectImage: Bool = false, isUserInteractionEnabled: Bool = true, isLimitLengthText isLimitLength: Bool = true, isOneLine: Bool = false) {
+    func setCell(title _title: String, titleAttributed _titleAttributed: NSAttributedString? = nil, text: String, textAttributed _textAttributed: NSAttributedString? = nil, indexPath indexPathCell: IndexPath, isValid isValidText: Bool = true, isTitleErrorState isTitleError: Bool = false, isLast isLastText: Bool = false, isNeedLastLine: Bool = false, isNeedSelectImage: Bool = false, isUserInteractionEnabled: Bool = true, isLimitLengthText isLimitLength: Bool = true, isOneLine: Bool = false) {
         indexPath = indexPathCell
         isValid = isValidText
         isLast = isLastText
@@ -51,7 +51,7 @@ class UDTextAnimateTableViewCell: UITableViewCell, UITextViewDelegate, UITextFie
         isLimitLengthText = isLimitLength
         title = _title
         titleAttributed = _titleAttributed
-        teextAttributed = textAttributed
+        textAttributed = _textAttributed
         let feedbackFormStyle = configurationStyle.feedbackFormStyle
         titleLabel.textColor = feedbackFormStyle.headerColor
         titleLabel.font = feedbackFormStyle.headerFont
@@ -89,14 +89,14 @@ class UDTextAnimateTableViewCell: UITableViewCell, UITextViewDelegate, UITextFie
             myTextView.attributedText = textAttributed
         }
         
-        if self.myTextView.text.count == 0 {
-            if self.teextAttributed != nil {
-                self.titleLabelTopC.constant = self.teextAttributed!.string.count > 0 ? 10 : 34
+        if myTextView.text.count == 0 {
+            if textAttributed != nil {
+                titleLabelTopC.constant = textAttributed!.string.count > 0 ? 10 : 34
             } else {
-                self.titleLabelTopC.constant = 34
+                titleLabelTopC.constant = 34
             }
         } else {
-            self.titleLabelTopC.constant = 10
+            titleLabelTopC.constant = 10
         }
         
         selectImageView.image = configurationStyle.feedbackFormStyle.arrowImage
@@ -109,6 +109,7 @@ class UDTextAnimateTableViewCell: UITableViewCell, UITextViewDelegate, UITextFie
         lineView.backgroundColor = isValid ? feedbackFormStyle.lineSeparatorColor : feedbackFormStyle.lineSeparatorActiveColor
         self.backgroundColor = .clear
         self.selectionStyle = .none
+        self.layoutIfNeeded()
     }
     
     func setSelectedAnimate(isNeedFocusedTextView: Bool = true) {
@@ -127,12 +128,10 @@ class UDTextAnimateTableViewCell: UITableViewCell, UITextViewDelegate, UITextFie
                     self.myTextView.text = ""
                     self.myTextView.textColor = feedbackFormStyle.valueColor
                 }
-            } else {
-                if self.myTextView.text == self.title {
+            } else if self.myTextView.text == self.title || self.myTextView.attributedText == self.textAttributed {
                     self.titleLabel.text = self.title
                     self.myTextView.text = ""
                     self.myTextView.textColor = feedbackFormStyle.valueColor
-                }
             }
             self.titleLabel.textColor = self.isValid && !self.isTitleErrorState ? feedbackFormStyle.headerSelectedColor : feedbackFormStyle.errorColor
             self.titleLabelTopC.constant = 10
@@ -151,8 +150,8 @@ class UDTextAnimateTableViewCell: UITableViewCell, UITextViewDelegate, UITextFie
             }
             
             if self.myTextView.text.count == 0 {
-                if self.teextAttributed != nil {
-                    self.titleLabelTopC.constant = self.teextAttributed!.string.count > 0 ? 10 : 34
+                if self.textAttributed != nil {
+                    self.titleLabelTopC.constant = self.textAttributed!.string.count > 0 && !self.isValid ? 10 : 34
                 } else {
                     self.titleLabelTopC.constant = 34
                 }
@@ -165,16 +164,8 @@ class UDTextAnimateTableViewCell: UITableViewCell, UITextViewDelegate, UITextFie
     
     // MARK: - TextView
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        DispatchQueue.main.async {
-            self.delegate?.tapingTextView(indexPath: self.indexPath, position: self.positionIn(textView: textView))
-        }
+        self.delegate?.tapingTextView(indexPath: self.indexPath, position: self.positionIn(textView: textView))
         return true
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        DispatchQueue.main.async {
-            self.delegate?.endWrite()
-        }
     }
     
     func textViewDidChange(_ textView: UITextView) {
@@ -196,6 +187,9 @@ class UDTextAnimateTableViewCell: UITableViewCell, UITextViewDelegate, UITextFie
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
+            DispatchQueue.main.async {
+                self.delegate?.endWrite(indexPath: self.indexPath)
+            }
             textView.resignFirstResponder()
             return false
         }
@@ -230,8 +224,11 @@ class UDTextAnimateTableViewCell: UITableViewCell, UITextViewDelegate, UITextFie
     }
     
     func positionIn(textView: UITextView) -> CGFloat {
-        let countCharacters = (textView.offset(from: textView.beginningOfDocument, to: textView.selectedTextRange?.start ?? UITextPosition()))
+        var countCharacters = (textView.offset(from: textView.beginningOfDocument, to: textView.selectedTextRange?.start ?? UITextPosition()))
         let text: String = textView.text
+        if countCharacters > text.count {
+            countCharacters = text.count
+        }
         let endIndex = text.index(textView.text.startIndex, offsetBy: countCharacters)
         let stringBeforeCursor = String(text[text.startIndex..<endIndex])
         return stringBeforeCursor.size(availableWidth: textView.frame.width, attributes: [NSAttributedString.Key.font : configurationStyle.feedbackFormStyle.valueFont], usesFontLeading: true).height

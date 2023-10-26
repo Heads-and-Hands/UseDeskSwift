@@ -3,7 +3,6 @@
 //  UseDesk_SDK_Swift
 //
 import AsyncDisplayKit
-import UIKit
 
 class UDSizeMessagesManager: NSObject {
     
@@ -11,10 +10,10 @@ class UDSizeMessagesManager: NSObject {
     private var message = UDMessage()
     private var configurationStyle: ConfigurationStyle = ConfigurationStyle()
     private var indexPath: IndexPath?
-
+    
     public var maxWidthBubbleMessage: CGFloat = 0
     public var maxWidthBubbleMessageDimension: ASDimension = ASDimensionMakeWithPoints(0)
-
+    
     init(messagesView _messagesView: UDMessagesView?, message _message: UDMessage, indexPath _indexPath: IndexPath?, configurationStyle _configurationStyle: ConfigurationStyle) {
         super.init()
         self.messagesView = _messagesView
@@ -59,32 +58,6 @@ class UDSizeMessagesManager: NSObject {
         }
         maxWidthBubbleMessage -= widthTimeAndSendedIcon
         maxWidthBubbleMessageDimension = ASDimensionMakeWithPoints(maxWidthBubbleMessage)
-    }
-    
-    func sizeImageMessageFrom(size: CGSize) -> CGSize {
-        var heightPicture = size.height
-        var widthPicture = size.width
-        if heightPicture > 0 && widthPicture > 0 {
-            let maxWidth = MAX_WIDTH_MESSAGE - configurationStyle.avatarStyle.margin.left - configurationStyle.avatarStyle.margin.right - configurationStyle.avatarStyle.avatarDiameter - configurationStyle.bubbleStyle.marginAfter
-            if widthPicture > maxWidth {
-                while widthPicture > maxWidth {
-                    widthPicture = widthPicture * 0.95
-                    if heightPicture > configurationStyle.bubbleStyle.bubbleHeightMin {
-                        heightPicture = heightPicture * 0.95
-                    }
-                }
-            } else if widthPicture < configurationStyle.bubbleStyle.bubbleWidthMin {
-                while widthPicture < configurationStyle.bubbleStyle.bubbleWidthMin {
-                    widthPicture = widthPicture * 1.05
-                    if heightPicture < configurationStyle.bubbleStyle.bubbleWidthMin {
-                        heightPicture = heightPicture * 1.05
-                    }
-                }
-            }
-            return CGSize(width: widthPicture, height: heightPicture)
-        } else {
-            return CGSize(width: configurationStyle.pictureStyle.sizeDefault.width, height: configurationStyle.pictureStyle.sizeDefault.height)
-        }
     }
     
 }

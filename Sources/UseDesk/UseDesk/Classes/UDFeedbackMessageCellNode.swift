@@ -3,6 +3,7 @@
 
 import UIKit
 import AsyncDisplayKit
+import MarkdownKit
 
 protocol UDFeedbackMessageCellNodeDelegate: AnyObject {
     func feedbackAction(indexPath: IndexPath, feedback: Bool)
@@ -22,20 +23,19 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
         super.init()
     }
     
-    override func bindData(messagesView messagesView_: UDMessagesView?, message : UDMessage, avatarImage: UIImage?) {
+    override func bindData(messagesView messagesView_: UDMessagesView?, message : UDMessage) {
         messagesView = messagesView_
         self.message = message
         self.isOutgoing = message.outgoing
+        configurationStyle = messagesView?.usedesk?.configurationStyle ?? ConfigurationStyle()
         let feedbackMessageStyle = configurationStyle.feedbackMessageStyle
         feedbackAction = message.feedbackAction
         
-        var attributedString = NSMutableAttributedString()
         let messageStyle = configurationStyle.messageStyle
-        if message.attributedString != nil {
-            attributedString = message.attributedString!
-        } else {
-            attributedString = NSMutableAttributedString(string: message.text)
-        }
+        var attributedString = UDMarkdownParser.mutableAttributedString(for: message.text,
+                                                                    font: messageStyle.font,
+                                                                    color: message.outgoing ? messageStyle.textOutgoingColor : messageStyle.textIncomingColor,
+                                                                    linkColor: message.outgoing ? messageStyle.linkOutgoingColor : messageStyle.linkIncomingColor)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         paragraphStyle.lineBreakMode = .byWordWrapping
@@ -45,6 +45,7 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
         addSubnode(textMessageNode)
         
         //dislike button
+        dislikeButtonNode.removeFromSupernode()
         if feedbackAction != nil {
             dislikeButtonNode.setBackgroundImage(feedbackMessageStyle.dislikeOnImage, for: .normal)
         } else {
@@ -58,6 +59,7 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
         addSubnode(dislikeButtonNode)
         
         //like button
+        likeButtonNode.removeFromSupernode()
         if feedbackAction != nil {
             likeButtonNode.setBackgroundImage(feedbackMessageStyle.likeOnImage, for: .normal)
         } else {
@@ -78,7 +80,7 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
             likeButtonNode.alpha = 1
             dislikeButtonNode.alpha = 1
         }
-        super.bindData(messagesView: messagesView, message: message, avatarImage: avatarImage)
+        super.bindData(messagesView: messagesView, message: message)
     }
     
     override public func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -92,13 +94,18 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
         hButtonsStack.alignItems = .center
         if feedbackAction != nil {
             if feedbackAction! {
-                hButtonsStack.children?.append(likeButtonNode)
+                hButtonsStack.setChild(likeButtonNode, at: 0)
             } else {
-                hButtonsStack.children?.append(dislikeButtonNode)
+                hButtonsStack.setChild(dislikeButtonNode, at: 0)
             }
         } else {
-            hButtonsStack.children?.append(dislikeButtonNode)
-            hButtonsStack.children?.append(likeButtonNode)
+            if feedbackMessageStyle.isFirstDislike {
+                hButtonsStack.setChild(dislikeButtonNode, at: 0)
+                hButtonsStack.setChild(likeButtonNode, at: 1)
+            } else {
+                hButtonsStack.setChild(likeButtonNode, at: 0)
+                hButtonsStack.setChild(dislikeButtonNode, at: 1)
+            }
         }
         let hButtonsInsetStack = ASInsetLayoutSpec(insets: UIEdgeInsets(top: feedbackMessageStyle.buttonsMarginTop, left: 0, bottom: 0, right: 0), child: hButtonsStack)
         
@@ -110,10 +117,9 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
         vMessageStack.direction = .vertical
         vMessageStack.style.flexShrink = 1.0
         vMessageStack.style.flexGrow = 0
-        vMessageStack.style.maxWidth = ASDimensionMakeWithPoints(sizeMessagesManager.maxWidthBubbleMessage)
         vMessageStack.spacing = 0
         vMessageStack.alignItems = .end
-        vMessageStack.children?.append(vButtonsAndTextStack)
+        vMessageStack.setChild(vButtonsAndTextStack, at: 0)
         vMessageStack.style.maxWidth = sizeMessagesManager.maxWidthBubbleMessageDimension
         
         timeNode.style.alignSelf = .end
@@ -127,7 +133,7 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
             timeEndSendedLayoutElements.append(sendedImageNode)
         }
         let horizon = ASStackLayoutSpec(direction: .horizontal, spacing: 0, justifyContent: .end, alignItems: .end, children: timeEndSendedLayoutElements)
-        vMessageStack.children?.append(horizon)
+        vMessageStack.setChild(horizon, at: 1)
         
         contentMessageInsetSpec = ASInsetLayoutSpec(insets: UIEdgeInsets.zero, child: vMessageStack)
         let messageLayoutSpec = super.layoutSpecThatFits(constrainedSize)
@@ -138,7 +144,12 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
         feedbackAction = false
         likeButtonNode.isUserInteractionEnabled = false
         var frame = dislikeButtonNode.frame
-        frame.origin.x += ((configurationStyle.feedbackMessageStyle.buttonSize.width / 2) + (configurationStyle.feedbackMessageStyle.buttonsSpacing / 2))
+        let changePosition = ((configurationStyle.feedbackMessageStyle.buttonSize.width / 2) + (configurationStyle.feedbackMessageStyle.buttonsSpacing / 2))
+        if configurationStyle.feedbackMessageStyle.isFirstDislike {
+            frame.origin.x += changePosition
+        } else {
+            frame.origin.x -= changePosition
+        }
         dislikeButtonNode.setBackgroundImage(configurationStyle.feedbackMessageStyle.dislikeOnImage, for: .normal)
         UIView.animate(withDuration: 0.4) {
             self.dislikeButtonNode.frame = frame
@@ -156,7 +167,12 @@ class UDFeedbackMessageCellNode: UDMessageCellNode {
         feedbackAction = true
         likeButtonNode.isUserInteractionEnabled = false
         var frame = likeButtonNode.frame
-        frame.origin.x -= ((configurationStyle.feedbackMessageStyle.buttonSize.width / 2) + (configurationStyle.feedbackMessageStyle.buttonsSpacing / 2))
+        let changePosition = ((configurationStyle.feedbackMessageStyle.buttonSize.width / 2) + (configurationStyle.feedbackMessageStyle.buttonsSpacing / 2))
+        if configurationStyle.feedbackMessageStyle.isFirstDislike {
+            frame.origin.x -= changePosition
+        } else {
+            frame.origin.x += changePosition
+        }
         likeButtonNode.setBackgroundImage(configurationStyle.feedbackMessageStyle.likeOnImage, for: .normal)
         UIView.animate(withDuration: 0.4) {
             self.likeButtonNode.frame = frame

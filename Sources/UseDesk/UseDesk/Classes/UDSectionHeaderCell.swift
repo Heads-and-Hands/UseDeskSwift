@@ -2,9 +2,8 @@
 //  UDSectionHeaderCell.swift
 
 import Foundation
-import UIKit
 
-class UDSectionHeaderCell: UITableViewCell {
+class UDSectionHeaderCell: UIView {
     let labelSectionHeader = UILabel()
     let backView = UIView()
     
@@ -18,11 +17,12 @@ class UDSectionHeaderCell: UITableViewCell {
         indexPath = indexPath_
         messagesView = messagesView_
         backView.backgroundColor = configurationStyle.sectionHeaderStyle.backViewColor
-        contentView.addSubview(backView)
+        self.addSubview(backView)
         labelSectionHeader.font = configurationStyle.sectionHeaderStyle.font
         labelSectionHeader.textColor = configurationStyle.sectionHeaderStyle.textColor
-        contentView.addSubview(labelSectionHeader)
+        self.addSubview(labelSectionHeader)
         labelSectionHeader.textAlignment = .center
+        isUserInteractionEnabled = false
     }
     
     override func layoutSubviews() {
@@ -32,17 +32,15 @@ class UDSectionHeaderCell: UITableViewCell {
         var widthText: CGFloat = SCREEN_WIDTH - sectionHeaderStyle.margin.left - sectionHeaderStyle.margin.right
         let message: UDMessage? = messagesView?.getMessage(indexPath)
         if message != nil {
-            if message!.date != nil {
-                if usedesk != nil {
-                    labelSectionHeader.text = message!.date!.dateFromHeaderChat(usedesk!)
-                }
-                widthText = labelSectionHeader.text?.size(attributes: [NSAttributedString.Key.font : sectionHeaderStyle.font]).width  ?? widthText
+            if usedesk != nil {
+                labelSectionHeader.text = message!.date.dateFromHeaderChat(usedesk!)
             }
+            widthText = labelSectionHeader.text?.size(attributes: [NSAttributedString.Key.font : sectionHeaderStyle.font]).width  ?? widthText
         }
         let heightText: CGFloat = labelSectionHeader.text != nil ? sectionHeaderStyle.textHeight : 0
         labelSectionHeader.frame = CGRect(x: self.center.x - (widthText / 2), y: sectionHeaderStyle.backViewPadding.top + sectionHeaderStyle.margin.top, width: widthText, height: heightText)
         if UIScreen.main.bounds.height < UIScreen.main.bounds.width {
-            if contentView.frame.origin.x > 0 {
+            if self.frame.origin.x > 0 {
                 labelSectionHeader.frame.origin.x -= 22
             }
         }

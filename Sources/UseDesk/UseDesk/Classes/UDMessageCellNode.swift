@@ -8,37 +8,46 @@ import AsyncDisplayKit
 class UDMessageCellNode: ASCellNode {
     var nameNode = ASTextNode()
     var bubbleImageNode = ASImageNode()
+    var bubbleSelectingImageNode = ASImageNode()
     var avatarImageNode = ASNetworkImageNode()
     var timeBackNode = ASDisplayNode()
     var timeNode = ASTextNode()
     var sendedImageNode = ASImageNode()
     var notSentImageNode = ASImageNode()
+    var activityIndicator: UIActivityIndicatorView?
     
     weak var messagesView: UDMessagesView?
     
     var message = UDMessage()
-    var configurationStyle: ConfigurationStyle = ConfigurationStyle()
+    var configurationStyle: ConfigurationStyle!
     var isNeedShowSender: Bool = false
     var isPictureOrVideoType: Bool = false
     var contentMessageInsetSpec = ASInsetLayoutSpec()
+    var orientaion: Orientation = .portrait
     
     override init() {
         super.init()
         addSubnode(bubbleImageNode)
+        addSubnode(bubbleSelectingImageNode)
     }
     
-    func bindData(messagesView messagesView_: UDMessagesView?, message : UDMessage, avatarImage: UIImage?) {
+    func bindData(messagesView messagesView_: UDMessagesView?, message : UDMessage) {
         messagesView = messagesView_
         self.message = message
+        configurationStyle = messagesView?.usedesk?.configurationStyle ?? ConfigurationStyle()
         let messageStyle = configurationStyle.messageStyle
         let bubbleStyle = configurationStyle.bubbleStyle
         
-        backgroundColor = .clear
+        backgroundColor = configurationStyle.chatStyle.backgroundColor
         
         var bubbleImage = message.outgoing ? bubbleStyle.backgroundImageOutgoing : bubbleStyle.backgroundImageIncoming
         bubbleImage = bubbleImage.stretchableImage(withLeftCapWidth: 23, topCapHeight: 16).withRenderingMode(.alwaysTemplate)
         bubbleImageNode.image = bubbleImage
         bubbleImageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(message.incoming != false ? bubbleStyle.bubbleColorIncoming : bubbleStyle.bubbleColorOutgoing)
+        
+        bubbleSelectingImageNode.image = bubbleImage
+        bubbleSelectingImageNode.imageModificationBlock = ASImageNodeTintColorModificationBlock(bubbleStyle.bubbleSelectColor)
+        bubbleSelectingImageNode.alpha = 0
         
         //avatar and time
         if isPictureOrVideoType {
@@ -53,12 +62,14 @@ class UDMessageCellNode: ASCellNode {
         notSentImageNode.removeFromSupernode()
         sendedImageNode.removeFromSupernode()
         nameNode.removeFromSupernode()
-        avatarImageNode.image = avatarImage
+        
+        avatarImageNode.image = message.avatarImage ?? configurationStyle.avatarStyle.avatarImageDefault
+        
         if message.outgoing {
             avatarImageNode.style.preferredSize = CGSize.zero
-            var imageSended = message.loadingMessageId != "" ? messageStyle.sendStatusImage : messageStyle.sendedStatusImage
+            var imageSended = message.statusSend == UD_STATUS_SEND_SUCCEED ? messageStyle.sendedStatusImage : messageStyle.sendStatusImage
             if isPictureOrVideoType {
-                imageSended = message.loadingMessageId != "" ? messageStyle.sendStatusImageForImageMessage : messageStyle.sendedStatusImageForImageMessage
+                imageSended = message.statusSend == UD_STATUS_SEND_SUCCEED ? messageStyle.sendedStatusImageForImageMessage : messageStyle.sendStatusImageForImageMessage
             }
             sendedImageNode.image = imageSended
             addSubnode(sendedImageNode)
@@ -75,9 +86,10 @@ class UDMessageCellNode: ASCellNode {
             avatarImageNode.cornerRadius = configurationStyle.avatarStyle.avatarDiameter / 2
             avatarImageNode.clipsToBounds = true
             addSubnode(avatarImageNode)
-            
+
             nameNode.textContainerInset = messageStyle.senderTextMargin
             nameNode.attributedText = NSAttributedString(string: message.operatorName != "" ? message.operatorName : message.name, attributes: [.foregroundColor: messageStyle.senderTextColor, .font: messageStyle.senderTextFont])
+            nameNode.alpha = isNeedShowSender ? 1 : 0
             addSubnode(nameNode)
         }
         
@@ -88,8 +100,28 @@ class UDMessageCellNode: ASCellNode {
         } else {
             timeColor = message.outgoing ? messageStyle.timeOutgoingColor : messageStyle.timeIncomingColor
         }
-        timeNode.attributedText = NSAttributedString(string: message.date?.time ?? "" , attributes : [.foregroundColor: timeColor, .font: messageStyle.timeFont])
+        timeNode.attributedText = NSAttributedString(string: message.date.time, attributes : [.foregroundColor: timeColor, .font: messageStyle.timeFont])
         addSubnode(timeNode)
+    }
+    
+    public func updateAnimateLoader() {
+        guard activityIndicator != nil else {return}
+        guard activityIndicator?.alpha == 1 && !(activityIndicator?.isAnimating ?? false) else {return}
+        activityIndicator?.startAnimating()
+    }
+    
+    public func setAvatarImage(_ avatarImage: UIImage) {
+        avatarImageNode.image = avatarImage
+    }
+    
+    public func startSelectionAnimate() {
+        UIView.animate(withDuration: 0.3, delay: 0.0) {
+            self.bubbleSelectingImageNode.alpha = 0.1
+        } completion: { _ in
+            UIView.animate(withDuration: 0.5, delay: 0.2) {
+                self.bubbleSelectingImageNode.alpha = 0
+            }
+        }
     }
     
     override public func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -102,9 +134,16 @@ class UDMessageCellNode: ASCellNode {
 
         sendedImageNode.style.alignSelf = .end
         sendedImageNode.style.maxSize = messageStyle.sendedStatusSize
+        
+        let contentMessageBackgroundSelectingSpec = ASBackgroundLayoutSpec()
+        contentMessageBackgroundSelectingSpec.background = bubbleImageNode
+        contentMessageBackgroundSelectingSpec.child = bubbleSelectingImageNode
+        contentMessageBackgroundSelectingSpec.style.maxWidth = sizeMessagesManager.maxWidthBubbleMessageDimension
+        contentMessageBackgroundSelectingSpec.style.flexShrink = 1
+        contentMessageBackgroundSelectingSpec.style.flexGrow = 0
 
         let contentMessageBackgroundSpec = ASBackgroundLayoutSpec()
-        contentMessageBackgroundSpec.background = bubbleImageNode
+        contentMessageBackgroundSpec.background = contentMessageBackgroundSelectingSpec
         contentMessageBackgroundSpec.child = contentMessageInsetSpec
         contentMessageBackgroundSpec.style.maxWidth = sizeMessagesManager.maxWidthBubbleMessageDimension
         contentMessageBackgroundSpec.style.flexShrink = 1
@@ -112,6 +151,7 @@ class UDMessageCellNode: ASCellNode {
         
         var layoutElements: [ASLayoutElement] = [contentMessageBackgroundSpec]
         if message.incoming && isNeedShowSender {
+            nameNode.alpha = 1
             layoutElements.insert(nameNode, at: 0)
         }
         
@@ -126,17 +166,17 @@ class UDMessageCellNode: ASCellNode {
             let notSentImageInsetSpec = ASInsetLayoutSpec(insets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: messageStyle.notSentImageMarginToBubble), child: notSentImageNode)
             let notSentImageCenterSpec = ASCenterLayoutSpec(horizontalPosition: .end, verticalPosition: .center, sizingOption: [], child: notSentImageInsetSpec)
             if message.statusSend == UD_STATUS_SEND_FAIL {
-                hMessageStack.children?.append(notSentImageCenterSpec)
+                hMessageStack.setChild(notSentImageCenterSpec, at: 0)
             }
-            hMessageStack.children?.append(contentMessageBackgroundAndNameStack)
+            hMessageStack.setChild(contentMessageBackgroundAndNameStack, at: 1)
             hMessageStack.horizontalAlignment = .right
         } else {
             avatarImageNode.style.width = ASDimensionMake(avatarStyle.avatarDiameter)
             avatarImageNode.style.height = ASDimensionMake(avatarStyle.avatarDiameter)
             let avatarImageInsetSpec = ASInsetLayoutSpec(insets: avatarStyle.margin, child: avatarImageNode)
             let avatarImageCenterSpec = ASCenterLayoutSpec(horizontalPosition: .start, verticalPosition: .end, sizingOption: [], child: avatarImageInsetSpec)
-            hMessageStack.children?.append(avatarImageCenterSpec)
-            hMessageStack.children?.append(contentMessageBackgroundAndNameStack)
+            hMessageStack.setChild(avatarImageCenterSpec, at: 0)
+            hMessageStack.setChild(contentMessageBackgroundAndNameStack, at: 1)
             hMessageStack.horizontalAlignment = .left
         }
         
