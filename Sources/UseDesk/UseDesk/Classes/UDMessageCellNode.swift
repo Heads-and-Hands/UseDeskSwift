@@ -4,6 +4,7 @@
 //
 
 import AsyncDisplayKit
+import UIKit
 
 class UDMessageCellNode: ASCellNode {
     var nameNode = ASTextNode()

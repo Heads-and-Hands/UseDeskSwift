@@ -2,6 +2,7 @@
 // UDNSLayoutConstraintExtension.swift
         
 import Foundation
+import UIKit
 
 extension NSLayoutConstraint {
     func constraintWithMultiplier(_ multiplier: CGFloat) -> NSLayoutConstraint {

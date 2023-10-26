@@ -6,7 +6,6 @@ import SocketIO
 import UserNotifications
 import Reachability
 import CoreTelephony
-import UIKit
 
 public class UseDeskSDK: NSObject {
     @objc public var newMessageBlock: UDMessageBlock?
