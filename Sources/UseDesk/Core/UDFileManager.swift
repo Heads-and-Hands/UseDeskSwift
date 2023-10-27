@@ -7,21 +7,26 @@ import UIKit
 import Foundation
 import Alamofire
 import Photos
-import Swime
 import CommonCrypto
+
+enum UDFileType {
+    case image
+    case video
+    case file
+}
 
 class UDFileManager: NSObject {
     class func downloadFile(indexPath: IndexPath, urlPath: String, name: String, extansion: String, successBlock: @escaping (IndexPath, URL)->(), errorBlock: (_ error: String) -> Void) {
         if let url = URL(string: urlPath) {
             let destination: DownloadRequest.Destination = { _, _ in
-                let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask) [0]
-                var fileURL = documentsURL.appendingPathComponent("\(name).\(extansion)")
+                let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                var fileURL = documentsURL.appendingPathComponent("\(name)")
                 var flag = true
                 var index = 0
                 while flag {
                     if FileManager.default.fileExists(atPath: fileURL.path) {
                         index += 1
-                        fileURL = documentsURL.appendingPathComponent("\(index)\(name).\(extansion)")
+                        fileURL = documentsURL.appendingPathComponent("\(index)\(name)")
                     } else {
                         flag = false
                     }
@@ -36,9 +41,8 @@ class UDFileManager: NSObject {
         }
     }
     
-    class func videoPreview(filePath:String) -> UIImage {
-        let vidURL = NSURL(fileURLWithPath:filePath)
-        let asset = AVURLAsset(url: vidURL as URL)
+    class func videoPreview(fileURL: URL) -> UIImage {
+        let asset = AVURLAsset(url: fileURL)
         let generator = AVAssetImageGenerator(asset: asset)
         generator.appliesPreferredTrackTransform = true
 
@@ -80,13 +84,6 @@ extension FileManager {
         var fileName = data.sha1(uppercased: true) ?? "\(data.hashValue)"
         if fileExtension != nil {
             fileName += "." + fileExtension!
-        } else {
-            let subData = data.prefix(10240)
-            if let fileExtensionSwime = Swime.mimeType(data: subData)?.ext {
-                fileName += "." + fileExtensionSwime
-            } else {
-                fileName += ".mp4"
-            }
         }
 
         let dataPath = "file://" + udCacheDataPath + "/"
@@ -128,6 +125,10 @@ public extension Data {
         }
         
         return hashString
+    }
+    
+    var size: Double {
+        return (Double(self.count) / Double(1048576))
     }
     
 }

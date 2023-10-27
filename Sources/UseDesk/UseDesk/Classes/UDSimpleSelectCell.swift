@@ -22,6 +22,7 @@ class UDSimpleSelectCell: UITableViewCell {
     
     func setCell(title: String) {
         let selectTopicFeedbackFormStyle = configurationStyle.selectTopicFeedbackFormStyle
+        backgroundColor = configurationStyle.chatStyle.backgroundColor
         titleLabel.text = title
         titleLabel.font = selectTopicFeedbackFormStyle.titleTopicFont
         titleLabel.textColor = selectTopicFeedbackFormStyle.titleTopicColor

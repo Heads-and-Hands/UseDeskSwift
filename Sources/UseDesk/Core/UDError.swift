@@ -11,14 +11,19 @@ import Alamofire
     case null
     case chanelIdError
     case urlError
+    case urlAvatarError
     case emailError
     case urlToSendFileError
     case urlAPIError
     case phoneError
     case tokenError
+    case countMessagesOnInitError
     case falseInitChatError
     case serverError
+    case socketError
     case emptyKnowledgeBaseID
+    case emptyTokenAPI
+    case initChatWhenChatOpenError
     
     public init(errorCode: Int) {
         switch errorCode {
@@ -37,6 +42,8 @@ import Alamofire
             return "Invalid chanel id"
         case .urlError:
             return "Invalid url"
+        case .urlAvatarError:
+            return "Invalid avatar url"
         case .emailError:
             return "Invalid email"
         case .urlToSendFileError:
@@ -47,12 +54,20 @@ import Alamofire
             return "Invalid phone number"
         case .tokenError:
             return "Invalid token"
+        case .countMessagesOnInitError:
+            return "Error limit pagination. Minimum 10 messages."
         case .falseInitChatError:
             return "False init chat"
         case .serverError:
             return "Error in server"
+        case .socketError:
+            return "Error in socket"
         case .emptyKnowledgeBaseID:
             return "Empty knowledgeBaseID"
+        case .emptyTokenAPI:
+            return "Empty api_token"
+        case .initChatWhenChatOpenError:
+            return "Chat already open"
         }
     }
 }

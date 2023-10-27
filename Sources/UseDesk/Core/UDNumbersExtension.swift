@@ -1,7 +1,5 @@
 //
 //  UDNumbersExtension.swift
-//  Alamofire
-//
 
 import UIKit
 
@@ -23,19 +21,19 @@ extension Double {
 
 extension Int {
     func countFilesString(_ usedesk: UseDeskSDK) -> String {
-        var fileString: String = usedesk.stringFor("File").lowercased()
+        var fileString: String = usedesk.model.stringFor("File").lowercased()
 
         if "1".contains("\(self % 10)") {
-            fileString = usedesk.stringFor("File").lowercased()
+            fileString = usedesk.model.stringFor("File").lowercased()
         }
         if "234".contains("\(self % 10)") {
-            fileString = usedesk.stringFor("File2").lowercased()
+            fileString = usedesk.model.stringFor("File2").lowercased()
         }
         if "567890".contains("\(self % 10)") {
-            fileString = usedesk.stringFor("File3").lowercased()
+            fileString = usedesk.model.stringFor("File3").lowercased()
         }
         if 11...14 ~= self % 100 {
-            fileString = usedesk.stringFor("File3").lowercased()
+            fileString = usedesk.model.stringFor("File3").lowercased()
         }
         return "\(self) " + fileString
     }

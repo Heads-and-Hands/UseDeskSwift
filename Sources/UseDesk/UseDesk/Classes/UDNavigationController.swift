@@ -6,15 +6,15 @@ import UIKit
 
 class UDNavigationController: UINavigationController {
 
-    var tintColor: UIColor?
     var titleTextColor: UIColor?
     var titleTextFont: UIFont?
     
     var configurationStyle: ConfigurationStyle = ConfigurationStyle()
-    var isDark = false
+    var statusBarStyle: UIStatusBarStyle = .default
+    var isFileVC = false
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return isDark ? .lightContent : .default
+        return isFileVC ? .lightContent : statusBarStyle
     }
     
     override func viewDidLoad() {
@@ -22,17 +22,29 @@ class UDNavigationController: UINavigationController {
     }
     
     func setProperties() {
-        isDark = configurationStyle.navigationBarStyle.statusBarStyle == .default ? false : true
-        
-        navigationBar.isTranslucent = false
-        
-        tintColor = configurationStyle.navigationBarStyle.textColor
+        statusBarStyle = configurationStyle.navigationBarStyle.statusBarStyle
         
         titleTextColor = configurationStyle.navigationBarStyle.textColor
         titleTextFont = configurationStyle.navigationBarStyle.font
         
-        navigationBar.barTintColor = configurationStyle.navigationBarStyle.backgroundColor
-        navigationBar.tintColor = configurationStyle.navigationBarStyle.textColor
+        if #available(iOS 13.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = configurationStyle.navigationBarStyle.backgroundColor
+            appearance.titleTextAttributes = [.font: titleTextFont!,
+                                              .foregroundColor: titleTextColor!]
+            
+            navigationBar.isTranslucent = false
+            navigationBar.barTintColor = configurationStyle.navigationBarStyle.backgroundColor
+            navigationBar.tintColor =  configurationStyle.navigationBarStyle.backButtonColor
+            navigationBar.standardAppearance = appearance
+            navigationBar.compactAppearance = appearance
+            navigationBar.scrollEdgeAppearance = appearance
+        } else {
+            navigationBar.isTranslucent = false
+            navigationBar.barTintColor = configurationStyle.navigationBarStyle.backgroundColor
+            navigationBar.tintColor = configurationStyle.navigationBarStyle.textColor
+        }
     }
     
     func setTitleTextAttributes() {

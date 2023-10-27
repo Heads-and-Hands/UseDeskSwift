@@ -4,6 +4,7 @@
 
 import Foundation
 import AsyncDisplayKit
+import UIKit
 
 class UDMessageButtonCellNode: ASCellNode {
     
@@ -13,10 +14,10 @@ class UDMessageButtonCellNode: ASCellNode {
     
     var spacing: CGFloat = 0
     
-    func setCell(titleButton: String, spacing spacingButton: CGFloat = 0) {
+    func setCell(titleButton: String, spacing: CGFloat = 0) {
         self.backgroundColor = .clear
         self.selectionStyle = .none
-        spacing = spacingButton
+        self.spacing = spacing
         let messageButtonStyle = configurationStyle.messageButtonStyle
         let attributedString = NSMutableAttributedString(string: titleButton)
         attributedString.addAttributes([.font : messageButtonStyle.textFont, .foregroundColor : messageButtonStyle.textColor], range: NSRange(location: 0, length: attributedString.length))
@@ -41,7 +42,7 @@ class UDMessageButtonCellNode: ASCellNode {
                     justifyContent: .start,
                     alignItems: .center,
                     children: [titleNodeInsetSpec])
-        verticalSpec.children?.append(vMessageStack)
+        verticalSpec.setChild(vMessageStack, at: 0)
         verticalSpec.style.alignSelf = .center
         let verticalSpecInsetSpec = ASInsetLayoutSpec(insets: UIEdgeInsets(top: spacing, left: 0, bottom: 0, right: 0), child: verticalSpec)
         return verticalSpecInsetSpec

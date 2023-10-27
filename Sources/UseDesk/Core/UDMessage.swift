@@ -13,9 +13,10 @@ public class UDMessage: NSObject, Codable {
     @objc public var feedbackActionInt: Int = -1
     @objc public var text = ""
     @objc public var buttons = [UDMessageButton]()
-    @objc public var date: Date?
+    @objc public var date = Date()
     @objc public var status: Int = 0
     @objc public var statusSend: Int = 0
+    @objc public var idStatusForm: Int = 1
     @objc public var id: Int = 0
     @objc public var loadingMessageId = ""
     @objc public var ticket_id: Int = 0
@@ -23,9 +24,9 @@ public class UDMessage: NSObject, Codable {
     @objc public var operatorId: Int = 0
     @objc public var operatorName = ""
     @objc public var avatar = ""
+    @objc public var avatarImage: UIImage? = nil
     @objc public var file = UDFile()
-    
-    var attributedString: NSMutableAttributedString? = nil
+    @objc public var forms = [UDFormMessage]()
     
     var outgoing: Bool {
         return !incoming
@@ -57,6 +58,14 @@ public class UDMessage: NSObject, Codable {
         }
     }
     
+    var statusForms: StatusForm {
+        get {
+            return StatusForm(rawValue: idStatusForm) ?? .inputable
+        }
+        set {
+            idStatusForm = newValue.rawValue
+        }
+    }
     
     // MARK: - Initialization methods
     init(text: String = "", incoming: Bool = false) {
@@ -67,70 +76,28 @@ public class UDMessage: NSObject, Codable {
         self.text = text
     }
     
-    func setAsset(asset: PHAsset, isCacheFile: Bool = true, successBlock: @escaping () -> Void) {
+    init(urlMovie: URL, sort: Int = 0, isCacheFile: Bool = true) {
+        super.init()
         statusSend = UD_STATUS_SEND_DRAFT
-        if asset.mediaType == .video {
-            DispatchQueue.global(qos: .background).async {
-                let options = PHVideoRequestOptions()
-                options.version = .original
-                PHCachingImageManager.default().requestAVAsset(forVideo: asset, options: options){ [weak self] avasset, _, _ in
-                    guard let wSelf = self else {return}
-                    if let avassetURL = avasset as? AVURLAsset {
-                        if let videoData = try? Data(contentsOf: avassetURL.url) {
-                            let content = "data:video/mp4;base64,\(videoData.base64EncodedString())"
-                            var fileName = String(format: "%ld", content.hash)
-                            fileName += ".mp4"
-                            wSelf.type = UD_TYPE_VIDEO
-                            wSelf.incoming = false
-                            wSelf.typeSenderMessageString = "client_to_operator"
-                            wSelf.file.defaultPath = avassetURL.url.path
-                            if isCacheFile {
-                                wSelf.file.path = FileManager.default.udWriteDataToCacheDirectory(data: videoData) ?? ""
-                            }
-                            let previewImage = UDFileManager.videoPreview(filePath: avassetURL.url.path)
-                            if let previewData = previewImage.udToData() {
-                                wSelf.file.previewPath = FileManager.default.udWriteDataToCacheDirectory(data: previewData) ?? ""
-                            }
-                            wSelf.file.duration = asset.duration
-                            wSelf.file.name = fileName
-                            wSelf.file.sourceTypeString = UDTypeSourceFile.PHAsset.rawValue
-                            wSelf.status = UD_STATUS_SUCCEED
-                            successBlock()
-                        }
-                    }
+        autoreleasepool {
+            if let videoData = try? Data(contentsOf: urlMovie) {
+                let content = "data:video/mp4;base64,\(videoData)"
+                var fileName = String(format: "%ld", content.hash)
+                fileName += ".mp4"
+                type = UD_TYPE_VIDEO
+                incoming = false
+                typeSenderMessageString = "client_to_operator"
+                file.path = FileManager.default.udWriteDataToCacheDirectory(data: videoData, fileExtension: "mp4") ?? ""
+                let previewImage = UDFileManager.videoPreview(fileURL: urlMovie)
+                if let previewData = previewImage.udToData() {
+                    file.previewPath = FileManager.default.udWriteDataToCacheDirectory(data: previewData, fileExtension: "mp4") ?? ""
                 }
-            }
-        } else {
-            DispatchQueue.global(qos: .userInitiated).async {
-                let options = PHImageRequestOptions()
-                options.isSynchronous = true
-                PHCachingImageManager.default().requestImageData(for: asset, options: options, resultHandler: { [weak self] data, _, _, info in
-                    guard let wSelf = self else {return}
-                    if data != nil {
-                        
-                        
-                        
-                        let content = "data:image/png;base64,\(data!)"
-                        var fileName = String(format: "%ld", content.hash)
-                        fileName += ".png"
-                        wSelf.type = UD_TYPE_PICTURE
-                        wSelf.incoming = false
-                        wSelf.typeSenderMessageString = "client_to_operator"
-                        if let image = UIImage(data: data!) {
-                            autoreleasepool {
-                                if let imageData = image.udResizeImage()?.udToData() {
-                                    wSelf.file.path = FileManager.default.udWriteDataToCacheDirectory(data: imageData) ?? ""
-                                }
-                            }
-                        } else {
-                            wSelf.file.path = FileManager.default.udWriteDataToCacheDirectory(data: data!) ?? ""
-                        }
-                        wSelf.file.name = fileName
-                        wSelf.file.sourceTypeString = UDTypeSourceFile.PHAsset.rawValue
-                        wSelf.status = UD_STATUS_SUCCEED
-                        successBlock()
-                    }
-                })
+                let asset = AVURLAsset(url: urlMovie)
+                file.duration = Double(CMTimeGetSeconds(asset.duration))
+                file.name = fileName
+                file.sort = sort
+                file.sourceTypeString = UDTypeSourceFile.PHAsset.rawValue
+                status = UD_STATUS_SUCCEED
             }
         }
     }
@@ -146,7 +113,7 @@ public class UDMessage: NSObject, Codable {
                 type = UD_TYPE_PICTURE
                 incoming = false
                 typeSenderMessageString = "client_to_operator"
-                file.path = FileManager.default.udWriteDataToCacheDirectory(data: imageData) ?? ""
+                file.path = FileManager.default.udWriteDataToCacheDirectory(data: imageData, fileExtension: "png") ?? ""
                 file.name = fileName
                 file.sort = sort
                 file.sourceTypeString = UDTypeSourceFile.UIImage.rawValue
@@ -175,6 +142,102 @@ public class UDMessage: NSObject, Codable {
             status = UD_STATUS_SUCCEED
         }
     }
+    
+    
+    
+    // MARK: - Methods
+    public func copyMessage() -> UDMessage {
+        let message = UDMessage()
+        message.type = type
+        message.typeSenderMessageString = typeSenderMessageString
+        message.incoming = incoming
+        message.feedbackActionInt = feedbackActionInt
+        message.text = text
+        message.buttons = buttons
+        message.date = date
+        message.status = status
+        message.statusSend = statusSend
+        message.idStatusForm = idStatusForm
+        message.id = id
+        message.loadingMessageId = loadingMessageId
+        message.ticket_id = ticket_id
+        message.name = name
+        message.operatorId = operatorId
+        message.operatorName = operatorName
+        message.avatar = avatar
+        message.avatarImage = avatarImage
+        message.file = file
+        message.forms = forms
+        return message
+    }
+    
+    func setAsset(asset: PHAsset, isCacheFile: Bool = true, successBlock: @escaping () -> Void) {
+        statusSend = UD_STATUS_SEND_DRAFT
+        if asset.mediaType == .video {
+            DispatchQueue.global(qos: .background).async {
+                let options = PHVideoRequestOptions()
+                options.version = .current
+                options.isNetworkAccessAllowed = true
+                PHCachingImageManager.default().requestAVAsset(forVideo: asset, options: options){ [weak self] avasset, _, _ in
+                    guard let wSelf = self else {return}
+                    if let avassetURL = avasset as? AVURLAsset {
+                        if let videoData = try? Data(contentsOf: avassetURL.url) {
+                            let content = "data:video/mp4;base64,\(videoData.base64EncodedString())"
+                            var fileName = String(format: "%ld", content.hash)
+                            fileName += ".mp4"
+                            wSelf.type = UD_TYPE_VIDEO
+                            wSelf.incoming = false
+                            wSelf.typeSenderMessageString = "client_to_operator"
+                            wSelf.file.defaultPath = avassetURL.url.path
+                            if isCacheFile {
+                                wSelf.file.path = FileManager.default.udWriteDataToCacheDirectory(data: videoData, fileExtension: "mp4") ?? ""
+                            }
+                            let previewImage = UDFileManager.videoPreview(fileURL: avassetURL.url)
+                            if let previewData = previewImage.udToData() {
+                                wSelf.file.previewPath = FileManager.default.udWriteDataToCacheDirectory(data: previewData, fileExtension: "mp4") ?? ""
+                            }
+                            wSelf.file.duration = asset.duration
+                            wSelf.file.name = fileName
+                            wSelf.file.sourceTypeString = UDTypeSourceFile.PHAsset.rawValue
+                            wSelf.status = UD_STATUS_SUCCEED
+                            successBlock()
+                        }
+                    }
+                }
+            }
+        } else {
+            DispatchQueue.global(qos: .userInitiated).async {
+                let options = PHImageRequestOptions()
+                options.isSynchronous = true
+                options.isNetworkAccessAllowed = true
+                PHCachingImageManager.default().requestImageData(for: asset, options: options, resultHandler: { [weak self] data, dataUTI, _, info in
+                    guard let wSelf = self else {return}
+                    if data != nil {
+                        let content = "data:image/png;base64,\(data!)"
+                        var fileName = String(format: "%ld", content.hash)
+                        fileName += ".png"
+                        wSelf.type = UD_TYPE_PICTURE
+                        wSelf.incoming = false
+                        wSelf.typeSenderMessageString = "client_to_operator"
+                        if let image = UIImage(data: data!) {
+                            autoreleasepool {
+                                if let imageData = image.udResizeImage()?.udToData() {
+                                    wSelf.file.path = FileManager.default.udWriteDataToCacheDirectory(data: imageData, fileExtension: "png") ?? ""
+                                }
+                            }
+                        } else {
+                            wSelf.file.path = FileManager.default.udWriteDataToCacheDirectory(data: data!, fileExtension: "png") ?? ""
+                        }
+                        wSelf.file.name = fileName
+                        wSelf.file.sourceTypeString = UDTypeSourceFile.PHAsset.rawValue
+                        wSelf.status = UD_STATUS_SUCCEED
+                        successBlock()
+                    }
+                })
+            }
+        }
+    }
+    
     // MARK: - Codable methods
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
@@ -187,6 +250,7 @@ public class UDMessage: NSObject, Codable {
         try container.encode(date, forKey: .date)
         try container.encode(status, forKey: .status)
         try container.encode(statusSend, forKey: .statusSend)
+        try container.encode(idStatusForm, forKey: .statusForm)
         try container.encode(id, forKey: .id)
         try container.encode(loadingMessageId, forKey: .loadingMessageId)
         try container.encode(ticket_id, forKey: .ticket_id)
@@ -195,6 +259,7 @@ public class UDMessage: NSObject, Codable {
         try container.encode(operatorName, forKey: .operatorName)
         try container.encode(avatar, forKey: .avatar)
         try container.encode(file, forKey: .file)
+        try container.encode(forms, forKey: .forms)
     }
     
     required public init(from decoder: Decoder) throws {
@@ -205,9 +270,10 @@ public class UDMessage: NSObject, Codable {
         feedbackActionInt = try container.decode(Int.self, forKey: .feedbackActionInt)
         text = try container.decode(String.self, forKey: .text)
         buttons = try container.decode([UDMessageButton].self, forKey: .buttons)
-        date = try container.decode(Date?.self, forKey: .date)
+        date = try container.decode(Date.self, forKey: .date)
         status = try container.decode(Int.self, forKey: .status)
         statusSend = try container.decode(Int.self, forKey: .statusSend)
+        idStatusForm = try container.decode(Int.self, forKey: .statusForm)
         id = try container.decode(Int.self, forKey: .id)
         loadingMessageId = try container.decode(String.self, forKey: .loadingMessageId)
         ticket_id = try container.decode(Int.self, forKey: .ticket_id)
@@ -216,6 +282,7 @@ public class UDMessage: NSObject, Codable {
         operatorName = try container.decode(String.self, forKey: .operatorName)
         avatar = try container.decode(String.self, forKey: .avatar)
         file = try container.decode(UDFile.self, forKey: .file)
+        forms = try container.decode([UDFormMessage].self, forKey: .forms)
     }
     
     enum CodingKeys: String, CodingKey {
@@ -228,6 +295,7 @@ public class UDMessage: NSObject, Codable {
         case date
         case status
         case statusSend
+        case statusForm
         case id
         case loadingMessageId
         case ticket_id
@@ -236,5 +304,6 @@ public class UDMessage: NSObject, Codable {
         case operatorName
         case avatar
         case file
+        case forms
     }
 }

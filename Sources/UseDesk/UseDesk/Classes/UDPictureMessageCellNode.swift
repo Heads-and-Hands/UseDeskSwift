@@ -6,10 +6,9 @@ import Foundation
 import AsyncDisplayKit 
 
 class UDPictureMessageCellNode: UDMessageCellNode {
-    private var imageNode = ASImageNode()
+    var imageNode = ASImageNode()
     private var loaderNode = ASDisplayNode()
     private var loaderBackNode = ASDisplayNode()
-    private var activityIndicator = UIActivityIndicatorView()
     
     var messageTextParagraphStyle = NSMutableParagraphStyle()
     
@@ -20,9 +19,10 @@ class UDPictureMessageCellNode: UDMessageCellNode {
         imageNode.addTarget(self, action: #selector(self.actionTapBubble), forControlEvents: .touchUpInside)
     }
     
-    override func bindData(messagesView messagesView_: UDMessagesView?, message : UDMessage, avatarImage: UIImage?) {
+    override func bindData(messagesView messagesView_: UDMessagesView?, message : UDMessage) {
         messagesView = messagesView_
         self.message = messagesView?.getMessage(indexPath) ?? self.message
+        configurationStyle = messagesView?.usedesk?.configurationStyle ?? ConfigurationStyle()
         let pictureStyle = configurationStyle.pictureStyle
         isPictureOrVideoType = true
         
@@ -47,27 +47,27 @@ class UDPictureMessageCellNode: UDMessageCellNode {
         loaderNode = ASDisplayNode(viewBlock: { [weak self] () -> UIView in
             guard let wSelf = self else {return UIView()}
             wSelf.activityIndicator = UIActivityIndicatorView(style: .white)
-            wSelf.activityIndicator.hidesWhenStopped = false
+            wSelf.activityIndicator?.hidesWhenStopped = false
             if message.status == UD_STATUS_OPENIMAGE {
-                wSelf.activityIndicator.startAnimating()
-                wSelf.activityIndicator.alpha = 1
+                wSelf.activityIndicator?.startAnimating()
+                wSelf.activityIndicator?.alpha = 1
                 wSelf.loaderBackNode.alpha = 1
             } else {
                 if message.status == UD_STATUS_SUCCEED {
-                    wSelf.activityIndicator.stopAnimating()
-                    wSelf.activityIndicator.alpha = 0
+                    wSelf.activityIndicator?.stopAnimating()
+                    wSelf.activityIndicator?.alpha = 0
                     wSelf.loaderBackNode.alpha = 0
                 } else {
-                    wSelf.activityIndicator.startAnimating()
-                    wSelf.activityIndicator.alpha = 1
+                    wSelf.activityIndicator?.startAnimating()
+                    wSelf.activityIndicator?.alpha = 1
                     wSelf.loaderBackNode.alpha = 1
                 }
             }
-            return wSelf.activityIndicator
+            return wSelf.activityIndicator ?? UIView()
         })
         if imageNode.image == pictureStyle.imageDefault || imageNode.image == nil {
             imageNode.image = message.file.image ?? pictureStyle.imageDefault
-            imageNode.contentMode = .scaleAspectFit
+            imageNode.contentMode = .scaleAspectFill
             imageNode.cornerRadius = pictureStyle.cornerRadius
         }
         if imageNode.supernode == nil {
@@ -76,7 +76,21 @@ class UDPictureMessageCellNode: UDMessageCellNode {
             addSubnode(loaderNode)
         }
         
-        super.bindData(messagesView: messagesView, message: message, avatarImage: avatarImage)
+        super.bindData(messagesView: messagesView, message: message)
+        
+        if !pictureStyle.isNeedBubble {
+            bubbleImageNode.image = nil
+        }
+    }
+    
+    public func setImage(_ image: UIImage) {
+        DispatchQueue.main.async {
+            guard self.loaderNode.alpha == 1 else {return}
+            self.imageNode.image = image
+            self.loaderBackNode.alpha = 0
+            self.loaderNode.alpha = 0
+            self.activityIndicator?.stopAnimating()
+        }
     }
     
     override public func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
@@ -87,11 +101,10 @@ class UDPictureMessageCellNode: UDMessageCellNode {
         let centerLoaderSpec = ASCenterLayoutSpec(centeringOptions: .XY, sizingOptions: [], child: loaderNode)
         loaderBackOverlaySpec.overlay = centerLoaderSpec
         loaderBackOverlaySpec.child = loaderBackNode
-        
-        let sizeMessagesManager = UDSizeMessagesManager(messagesView: messagesView, message: message, indexPath: indexPath, configurationStyle: configurationStyle)
-        let sizeImageNode = sizeMessagesManager.sizeImageMessageFrom(size: CGSize(width: imageNode.image?.size.width ?? 0, height: imageNode.image?.size.height ?? 0))
-        imageNode.style.width = ASDimensionMakeWithPoints(sizeImageNode.width)
-        imageNode.style.height = ASDimensionMakeWithPoints(sizeImageNode.height)
+
+        let percentWidth: CGFloat = orientaion == .portrait ? 0.3 : 0.6
+        imageNode.style.width = ASDimensionMakeWithPoints(constrainedSize.max.width - (constrainedSize.max.width * percentWidth))
+        imageNode.style.height = ASDimensionMakeWithPoints(constrainedSize.max.width - (constrainedSize.max.width * percentWidth))
         
         let imageWithLoaderStack = ASOverlayLayoutSpec()
         let centerLoaderBackSpec = ASCenterLayoutSpec(centeringOptions: .XY, sizingOptions: [], child: loaderBackOverlaySpec)
@@ -108,7 +121,8 @@ class UDPictureMessageCellNode: UDMessageCellNode {
         timeBackSpec.child = ASInsetLayoutSpec(insets: UIEdgeInsets(top: messageStyle.timeBackViewPadding.top, left: messageStyle.timeBackViewPadding.left, bottom: messageStyle.timeBackViewPadding.bottom, right: messageStyle.timeBackViewPadding.right), child: horizonTimeAndSendedSpec)
         
         let timeFromImageOverlaySpec = ASOverlayLayoutSpec()
-        let timeCenterSpec = ASCenterLayoutSpec(horizontalPosition: .end, verticalPosition: .end, sizingOption: .minimumWidth, child: timeBackSpec)
+        let timeBackSpecInset = ASInsetLayoutSpec(insets: messageStyle.timeBackViewMargin, child: timeBackSpec)
+        let timeCenterSpec = ASCenterLayoutSpec(horizontalPosition: .end, verticalPosition: .end, sizingOption: .minimumWidth, child: timeBackSpecInset)
         timeFromImageOverlaySpec.overlay = timeCenterSpec
         timeFromImageOverlaySpec.child = imageWithLoaderStack
         
@@ -116,7 +130,7 @@ class UDPictureMessageCellNode: UDMessageCellNode {
         vMessageStack.direction = .vertical
         vMessageStack.spacing = 0
         vMessageStack.alignItems = .end
-        vMessageStack.children?.append(timeFromImageOverlaySpec)
+        vMessageStack.setChild(timeFromImageOverlaySpec, at: 0)
         
         contentMessageInsetSpec = ASInsetLayoutSpec(insets: pictureStyle.margin, child: timeFromImageOverlaySpec)
         let messageLayoutSpec = super.layoutSpecThatFits(constrainedSize)

@@ -24,9 +24,10 @@ class UDOfflineFormTopicsSelect: UIViewController {
     private var previousOrientation: Orientation = .portrait
     
     convenience init() {
-        self.init(nibName: "UDOfflineFormTopicsSelect", bundle: .module)
+        let nibName: String = "UDOfflineFormTopicsSelect"
+        self.init(nibName: nibName, bundle: BundleId.bundle(for: nibName))
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         firstState()
@@ -55,10 +56,12 @@ class UDOfflineFormTopicsSelect: UIViewController {
     // MARK: - Private
     func firstState() {
         configurationStyle = usedesk?.configurationStyle ?? ConfigurationStyle()
+        self.view.backgroundColor = configurationStyle.chatStyle.backgroundColor
         title = usedesk?.callbackSettings.titleTopics ?? "Тема обращения"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: configurationStyle.navigationBarStyle.backButtonImage, style: .plain, target: self, action: #selector(self.backAction))
-        tableView.register(UINib(nibName: "UDSimpleSelectCell", bundle: .module), forCellReuseIdentifier: "UDSimpleSelectCell")
+        tableView.register(UINib(nibName: "UDSimpleSelectCell", bundle: BundleId.thisBundle), forCellReuseIdentifier: "UDSimpleSelectCell")
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.backgroundColor = configurationStyle.chatStyle.backgroundColor
         tableView.estimatedRowHeight = 64
         tableView.delegate = self
         tableView.dataSource = self
