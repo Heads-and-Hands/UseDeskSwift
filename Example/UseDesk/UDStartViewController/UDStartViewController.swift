@@ -5,7 +5,6 @@
 import Foundation
 import UIKit
 import UseDesk
-import IQKeyboardManagerSwift
 
 class UDStartViewController: UIViewController, UITextFieldDelegate, TabBarControllerDelegate {
     
@@ -61,8 +60,6 @@ class UDStartViewController: UIViewController, UITextFieldDelegate, TabBarContro
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        IQKeyboardManager.shared.enableAutoToolbar = false
-        IQKeyboardManager.shared.enable = true
         
         navigationController?.navigationBar.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white
@@ -221,7 +218,7 @@ class UDStartViewController: UIViewController, UITextFieldDelegate, TabBarContro
     }
     
     func startSDK(dataAvatar: Data? = nil) {
-        usedesk.start(withCompanyID: companyIdTextField.text ?? "", chanelId: chanelIdTextField.text ?? "", url: urlTextField.text ?? "", port: portTextField.text!, urlAPI: urlBaseTextField.text, api_token: apiTokenTextField.text ?? "", urlToSendFile: urlToSendFileTextField.text ?? "", knowledgeBaseID: knowledgeBaseIDTextField.text ?? "", knowledgeBaseSectionId: NSNumber(value: Int(sectionIdTextField.text ?? "") ?? 0), knowledgeBaseCategoryId: NSNumber(value: Int(categoryIdTextField.text ?? "") ?? 0), knowledgeBaseArticleId: NSNumber(value: Int(articleIdTextField.text ?? "") ?? 0), isReturnToParentFromKnowledgeBase: isReturnParentSwitch.isOn, name: nameTextField.text, email: emailTextField.text ?? "", phone: phoneTextField.text, avatar: dataAvatar, avatarUrl: URL(string: avatarUrlTextField.text ?? ""), token: tokenTextField.text, additional_id: additionalIdTextField.text, note: noteTextField.text, additionalFields: additionalFields(), additionalNestedFields: additionalNestedFields(), nameOperator: operatorNameTextField.text, nameChat: nameChatTextField.text ?? "", firstMessage: firstMessageTextField.text, countMessagesOnInit: NSNumber(value: Int(countMessagesOnInitTextField.text ?? "") ?? 20), localeIdentifier: localeIdTextField.text, isPresentDefaultControllers: !isTabBarSwitch.isOn, presentIn: self, connectionStatus: { success, feedbackStatus, token in
+        usedesk.start(withCompanyID: "164132", chanelId: "44938", url: "pubsubsec.usedesk.ru", port: portTextField.text!, urlAPI: "secure.usedesk.ru", api_token: apiTokenTextField.text ?? "", urlToSendFile: urlToSendFileTextField.text ?? "", knowledgeBaseID: knowledgeBaseIDTextField.text ?? "", knowledgeBaseSectionId: NSNumber(value: Int(sectionIdTextField.text ?? "") ?? 0), knowledgeBaseCategoryId: NSNumber(value: Int(categoryIdTextField.text ?? "") ?? 0), knowledgeBaseArticleId: NSNumber(value: Int(articleIdTextField.text ?? "") ?? 0), isReturnToParentFromKnowledgeBase: isReturnParentSwitch.isOn, name: nameTextField.text, email: emailTextField.text ?? "", phone: phoneTextField.text, avatar: dataAvatar, avatarUrl: URL(string: avatarUrlTextField.text ?? ""), token: tokenTextField.text, additional_id: additionalIdTextField.text, note: noteTextField.text, additionalFields: additionalFields(), additionalNestedFields: additionalNestedFields(), nameOperator: operatorNameTextField.text, nameChat: nameChatTextField.text ?? "", firstMessage: firstMessageTextField.text, countMessagesOnInit: NSNumber(value: Int(countMessagesOnInitTextField.text ?? "") ?? 20), localeIdentifier: localeIdTextField.text, isPresentDefaultControllers: !isTabBarSwitch.isOn, presentIn: self, connectionStatus: { success, feedbackStatus, token in
             if self.isTabBarSwitch.isOn && success {
                 let chatVC = self.usedesk.chatViewController() ?? UIViewController()
                 let baseNС = self.usedesk.baseNavigationController() ?? UINavigationController()
