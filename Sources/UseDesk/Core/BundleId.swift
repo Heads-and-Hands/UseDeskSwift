@@ -15,7 +15,7 @@ public class BundleId {
         let bundle: Bundle
         let podBundle: Bundle = Bundle(for: BundleId.self)
         if let bundleURL: URL = podBundle.url(forResource: "UseDesk", withExtension: "bundle") {
-            bundle = Bundle(url: bundleURL) ?? .main
+            bundle = Bundle(url: bundleURL) ?? .module
         } else {
             bundle = podBundle
         }
@@ -26,8 +26,8 @@ public class BundleId {
     /// Method searches for xib in bundle of application, which added UseDesk as pod, and then falls back for xib's in this bundle. This allows users to provide custom xib designs without making classes, inited from xibs, public.
     static func bundle(for nibName: String) -> Bundle {
         let bundle: Bundle
-        if let _ = Bundle.main.path(forResource: nibName, ofType: "nib") {
-            bundle = Bundle.main
+        if let _ = Bundle.module.path(forResource: nibName, ofType: "nib") {
+            bundle = Bundle.module
         } else {
             bundle = thisBundle
         }

@@ -137,8 +137,8 @@ class UseDeskSDKHelp {
         let systemVersion = UIDevice.current.systemVersion
         let model = UIDevice.udModelName
         let idDevice = UIDevice.current.identifierForVendor?.uuidString
-        let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let appName = Bundle.module.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
+        let appVersion = Bundle.module.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
 
         var userData: [String : Any] = [
             "app_name" : appName,

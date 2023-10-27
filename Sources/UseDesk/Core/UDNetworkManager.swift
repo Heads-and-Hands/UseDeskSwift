@@ -43,7 +43,7 @@ public class UDNetworkManager {
         var parameterUser: [String : Any] = [
             "os" : "iOS"
         ]
-        if let targetName = Bundle.main.infoDictionary?["CFBundleName"] {
+        if let targetName = Bundle.module.infoDictionary?["CFBundleName"] {
             parameterUser["browserName"] = targetName
         }
         
