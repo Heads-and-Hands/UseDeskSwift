@@ -2,9 +2,8 @@
 //  AppDelegate.swift
 //  UseDesk_Example
 
-
 import UIKit
-import UseDesk
+import UseDesk_SDK_Swift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,8 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         
         let startViewController = UDStartViewController(nibName: "UDStartViewController", bundle: nil)
-        
-        UINavigationBar.appearance().barTintColor = .red
         
         window?.rootViewController = UINavigationController(rootViewController: startViewController)
         

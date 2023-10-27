@@ -3,6 +3,7 @@
 
 import Foundation
 import SocketIO
+import UIKit
 
 class UseDeskSDKHelp {
     class func config_CompanyID(_ companyID: String, chanelId: String, email: String, phone: String?, name: String?, url: String?, countMessagesOnInit: Int, token: String?) -> [SocketData]? {

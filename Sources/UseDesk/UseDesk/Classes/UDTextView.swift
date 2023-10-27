@@ -4,6 +4,8 @@
 //
 
 import Foundation
+import UIKit
+
 class UDTextView: UITextView {
     
     var isNeedCustomTextContainerInset = false

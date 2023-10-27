@@ -2,6 +2,7 @@
 //  UDSectionHeaderCell.swift
 
 import Foundation
+import UIKit
 
 class UDSectionHeaderCell: UIView {
     let labelSectionHeader = UILabel()

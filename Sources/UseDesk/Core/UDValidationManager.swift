@@ -2,6 +2,8 @@
 //  UDValidationManager.swift
 //  UseDesk_SDK_Swift
 
+import Foundation
+
 public class UDValidationManager {
     
     class func validateInitionalsFields(companyID: String? = nil, chanelId: String? = nil, url: String? = nil, port: String? = nil, urlAPI: String? = nil, api_token: String? = nil, urlToSendFile: String? = nil, knowledgeBaseID: String? = nil, knowledgeBaseSectionId: NSNumber? = nil, knowledgeBaseCategoryId: NSNumber? = nil, knowledgeBaseArticleId: NSNumber? = nil, isReturnToParentFromKnowledgeBase: Bool = false, name: String? = nil, email: String? = nil, phone: String? = nil, avatar: Data? = nil, avatarUrl: URL? = nil, token: String? = nil, additional_id: String? = nil, note: String? = nil, additionalFields: [Int : String] = [:], additionalNestedFields: [[Int : String]] = [], nameOperator: String? = nil, nameChat: String? = nil, firstMessage: String? = nil, countMessagesOnInit: NSNumber? = nil, localeIdentifier: String? = nil, customLocale: [String : String]? = nil, isSaveTokensInUserDefaults: Bool = true, isPresentDefaultControllers: Bool = true, isOnlyKnowledgeBase : Bool = false, validModelBlock: @escaping UDValidModelBlock, errorStatus errorBlock: @escaping UDErrorBlock) {
